@@ -1,0 +1,2064 @@
+/*
+ * Tema Preciosa Aroma e Arte para Loja Integrada.
+ * Tudo fica preso em html.pz: a classe não entra em checkout, pagamento e confirmação de pedido,
+ * que continuam com o visual padrão da plataforma. Cores e fontes seguem o Manual de Identidade Visual.
+ */
+
+/* ---------- Tokens ---------- */
+html.pz {
+  /* manual da marca: azul-petróleo #386A75, dourado #D8A468, preto #1C1C1C e as variações para web */
+  --pz-teal-deep: #386a75;   /* azul-petróleo da marca: botões, superfícies escuras, títulos */
+  --pz-teal: #2c5761;        /* o mesmo azul mais fechado: hover e foco (texto branco continua legível) */
+  --pz-teal-soft: #dee6e8;   /* variação clara do manual */
+  --pz-porcelain: #f1f5f6;   /* fundo das seções e painéis claros */
+  --pz-paper: #ffffff;
+  --pz-ink: #1c1c1c;         /* preto da marca */
+  --pz-muted: #686868;       /* cinza do manual */
+  --pz-gold: #d8a468;        /* dourado da marca: filetes e detalhes, nunca texto em fundo claro */
+  --pz-gold-ink: #9c7140;    /* dourado fechado para ícones pequenos em fundo claro */
+  --pz-line: rgba(56, 106, 117, .18);
+
+  /* Goldenbook (fonte de títulos do manual) é paga; Marcellus é a substituta gratuita mais próxima até a licença */
+  --pz-serif: 'Marcellus', 'Times New Roman', serif;
+  --pz-sans: 'Quicksand', 'Helvetica Neue', Arial, sans-serif;
+
+  --pz-r-sm: 4px;
+  --pz-r-md: 10px;
+  --pz-r-lg: 18px;
+  --pz-gutter: clamp(16px, 4vw, 48px);
+  --pz-max: 1240px;
+  --pz-ease: cubic-bezier(.22, .61, .36, 1);
+  --pz-ease-out: cubic-bezier(.16, 1, .3, 1);
+}
+
+/* ---------- Base ---------- */
+html.pz body {
+  background: var(--pz-paper) !important;
+  color: var(--pz-ink);
+  font-family: var(--pz-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+html.pz body,
+html.pz .titulo,
+html.pz input,
+html.pz button,
+html.pz select,
+html.pz textarea { font-family: var(--pz-sans); }
+/* o tema escreve Roboto em vários seletores; :is() ganha deles sem usar !important,
+   e os títulos com classe própria (serif) continuam vencendo por especificidade */
+html.pz body :is(p, a, span, b, strong, em, s, del, ins, u, label, small, li, button, input, select, textarea, td, th, dt, dd, h6) { font-family: var(--pz-sans); }
+
+html.pz h1, html.pz h2, html.pz h3, html.pz h4, html.pz h5,
+html.pz .titulo-categoria strong,
+html.pz .nome-produto.titulo { font-family: var(--pz-serif); font-weight: 400; letter-spacing: .01em; color: var(--pz-teal-deep); }
+
+html.pz a { color: var(--pz-teal-deep); transition: color .18s var(--pz-ease); }
+html.pz a:hover { color: var(--pz-teal); }
+html.pz :focus-visible { outline: 2px solid var(--pz-teal); outline-offset: 3px; border-radius: 2px; }
+
+html.pz .conteiner,
+html.pz header > .container { max-width: var(--pz-max); width: auto; padding-left: var(--pz-gutter); padding-right: var(--pz-gutter); box-sizing: border-box; }
+
+html.pz .pz-oculto { display: none !important; }
+
+/* ---------- Botões ---------- */
+html.pz .pz-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 48px; padding: 0 26px;
+  border-radius: 999px; border: 1px solid transparent;
+  font: 500 15px/1 var(--pz-sans); letter-spacing: .02em; text-decoration: none;
+  transition: background-color .18s var(--pz-ease), color .18s var(--pz-ease), border-color .18s var(--pz-ease), transform .18s var(--pz-ease);
+}
+html.pz .pz-btn:active { transform: scale(.98); }
+html.pz .pz-btn--light { background: var(--pz-paper); color: var(--pz-teal-deep); }
+html.pz .pz-btn--light:hover { background: var(--pz-teal-soft); color: var(--pz-teal-deep); }
+html.pz .pz-btn--ghost { border-color: rgba(255,255,255,.55); color: #fff; }
+html.pz .pz-btn--ghost:hover { background: rgba(255,255,255,.1); border-color: #fff; color: #fff; }
+
+html.pz .botao.principal,
+html.pz .botao.principal.grande,
+html.pz .botao-comprar {
+  background: var(--pz-teal-deep) !important; border: 0; border-radius: 999px;
+  text-shadow: none; box-shadow: none; font-family: var(--pz-sans); font-weight: 500; letter-spacing: .02em;
+  transition: background-color .18s var(--pz-ease);
+}
+html.pz .botao.principal { color: #fff !important; }
+html.pz .botao.principal:hover,
+html.pz .botao-comprar:hover { background: var(--pz-teal) !important; }
+
+html.pz .pz-link {
+  font: 500 15px/1 var(--pz-sans); color: var(--pz-teal-deep); text-decoration: none;
+  padding-bottom: 4px; border-bottom: 1px solid var(--pz-gold);
+}
+html.pz .pz-link:hover { color: var(--pz-teal); border-color: var(--pz-teal); }
+
+/* ---------- Cabeçalho (fixo, sempre visível) ---------- */
+html.pz .pz-header {
+  position: sticky; top: 0; z-index: 1000;
+  background: rgba(255,255,255,.96);
+  border-bottom: 1px solid transparent;
+  transition: border-color .2s var(--pz-ease), box-shadow .2s var(--pz-ease);
+}
+html.pz .pz-header { margin: 0 !important; }
+@media (min-width: 768px) {
+  html.pz .menu.superior .nivel-um { display: flex; flex-wrap: nowrap; white-space: nowrap; }
+  html.pz .menu.superior .nivel-um > li { float: none; padding: 0 !important; }
+  html.pz .menu.superior .nivel-dois { white-space: normal; }
+}
+/* menu no fluxo do cabeçalho (o tema o deixa solto entre 768 e 991px e ele cobre a logo) */
+@media (min-width: 768px) {
+  html.pz .pz-header .row-flex { display: flex !important; flex-wrap: nowrap !important; align-items: center; }
+  html.pz .pz-header .row-flex > .col:first-child,
+  html.pz .pz-header .row-flex > .col:last-child { flex: 0 0 auto !important; width: auto !important; max-width: none !important; }
+  html.pz .pz-header .g_menu { position: static !important; left: auto !important; right: auto !important; transform: none !important; flex: 1 1 auto !important; width: auto !important; display: flex !important; justify-content: center; min-width: 0; }
+}
+/* ícones (busca, conta, carrinho) sempre na mesma linha */
+html.pz .theme-functions { flex-wrap: nowrap !important; }
+@media (min-width: 768px) and (max-width: 1023px) {
+  html.pz .menu.superior .nivel-um > li > a { padding: 26px 10px; }
+  html.pz .theme-functions > li + li { margin-left: 20px !important; }
+}
+html.pz .pz-header.is-scrolled { border-color: var(--pz-line); box-shadow: 0 6px 24px -18px rgba(44, 84, 93,.5); }
+html.pz .pz-header > .container { min-height: 76px; display: flex; align-items: center; }
+html.pz .pz-header > .container > .row-flex { width: 100%; }
+html.pz .pz-header .logo { margin: 0; line-height: 0; }
+html.pz .pz-header .logo img { height: 52px; width: auto; max-height: none; border-radius: var(--pz-r-sm); }
+
+@media (min-width: 768px) {
+  html.pz .menu.superior .nivel-um > li > a { padding: 26px 16px; }
+}
+html.pz .menu i.fundo-secundario,
+html.pz .menu-dropdown-toggle i { background: transparent !important; color: var(--pz-gold-ink) !important; }
+html.pz .menu.superior .nivel-um > li > a .titulo {
+  font: 500 15px/1 var(--pz-sans) !important; color: var(--pz-ink) !important; letter-spacing: .02em; text-transform: none;
+}
+html.pz .menu.superior .nivel-um > li > a i { background: none !important; color: var(--pz-gold-ink); }
+html.pz .menu.superior .nivel-um > li:hover > a .titulo { color: var(--pz-teal) !important; }
+html.pz .menu.superior .nivel-dois {
+  border: 1px solid var(--pz-line) !important; border-radius: var(--pz-r-md); background: var(--pz-paper);
+  box-shadow: 0 24px 48px -24px rgba(44, 84, 93,.35); padding: 10px 0; overflow: visible;
+}
+html.pz .menu.superior .nivel-dois a { font: 400 15px/1.3 var(--pz-sans); color: var(--pz-ink); padding: 9px 20px; }
+html.pz .menu.superior .nivel-dois a:hover { background: var(--pz-porcelain) !important; color: var(--pz-teal-deep); }
+html.pz .menu.superior .nivel-dois a i { display: none; }
+
+html.pz .theme-functions .svg-ico svg,
+html.pz .theme-functions svg { fill: var(--pz-teal-deep); }
+html.pz .theme-functions button,
+html.pz .theme-functions a { color: var(--pz-teal-deep); }
+html.pz .carrinho.vazio .qtd-carrinho { display: none !important; }
+html.pz .theme-functions .qtd-carrinho.cor-secundaria { color: #fff !important; font: 500 11px/18px var(--pz-sans) !important; text-align: center; }
+html.pz .qtd-carrinho { background: var(--pz-teal-deep) !important; color: #fff !important; font-family: var(--pz-sans) !important; }
+
+/* ---------- Topo da página inicial ---------- */
+html.pz .pz-hero {
+  display: grid; width: 100%; box-sizing: border-box; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  min-height: min(82vh, 760px);
+  background: var(--pz-teal);
+  color: #fff;
+  overflow: hidden;
+}
+html.pz .pz-hero__text {
+  position: relative;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: clamp(48px, 8vw, 112px) clamp(24px, 6vw, 96px);
+}
+html.pz .pz-hero__title {
+  font-family: var(--pz-serif); font-weight: 400; color: #fff;
+  font-size: clamp(34px, 3.7vw, 56px); line-height: 1.1; letter-spacing: -.005em;
+  max-width: 15ch; margin: 0 0 24px; text-wrap: balance;
+}
+html.pz .pz-hero__lead { font-size: clamp(16px, 1.3vw, 18px); line-height: 1.65; color: rgba(255,255,255,.92); max-width: 44ch; margin: 0 0 36px; }
+html.pz .pz-hero__actions { display: flex; flex-wrap: wrap; gap: 12px; }
+
+/* assinatura: o fio de aroma da logo subindo */
+html.pz .pz-smoke {
+  position: absolute; top: clamp(16px, 4vw, 48px); right: clamp(12px, 4vw, 56px);
+  width: clamp(70px, 9vw, 120px); height: auto; overflow: visible; pointer-events: none;
+}
+/* fumaça subindo: os traços correm pelo fio sem parar e somem no alto; nada gira nem inclina.
+   Um único movimento linear e contínuo (o deslocamento é igual ao tamanho do padrão, então a volta não dá salto). */
+html.pz .pz-smoke {
+  -webkit-mask-image: linear-gradient(to top, #000 45%, transparent 100%);
+          mask-image: linear-gradient(to top, #000 45%, transparent 100%);
+}
+html.pz .pz-smoke path { fill: none; stroke: rgba(255,255,255,.6); stroke-width: 1.2; stroke-linecap: round; stroke-dasharray: 90 40; stroke-dashoffset: 0; }
+html.pz .pz-smoke .pz-smoke__b { stroke: rgba(216,164,104,.7); }
+html.pz .pz-hero .pz-smoke__a { animation: pz-fumaca 7s linear infinite, pz-surge 1.4s ease-out both; }
+html.pz .pz-hero .pz-smoke__b { animation: pz-fumaca 9s linear -3s infinite, pz-surge 1.4s ease-out .4s both; }
+@keyframes pz-fumaca { to { stroke-dashoffset: -130; } }
+@keyframes pz-surge { from { opacity: 0; } }
+
+html.pz .pz-hero__media {
+  position: relative; margin: 0;
+  background: var(--pz-porcelain);
+  display: flex; align-items: center; justify-content: center;
+}
+html.pz .pz-hero__media img {
+  display: block; width: auto; height: auto;
+  max-width: min(78%, 560px); max-height: calc(min(82vh, 760px) - clamp(96px, 12vw, 160px));
+  border-radius: var(--pz-r-lg);
+  box-shadow: 0 40px 80px -48px rgba(44, 84, 93,.55), 0 0 0 1px var(--pz-line);
+}
+html.pz .pz-hero__media figcaption { position: absolute; left: clamp(16px, 3vw, 36px); bottom: clamp(16px, 3vw, 36px); }
+html.pz .pz-hero__media figcaption a {
+  display: inline-flex; flex-direction: column; gap: 2px;
+  background: var(--pz-paper); padding: 12px 18px; border-radius: var(--pz-r-md);
+  border-left: 2px solid var(--pz-gold);
+  text-decoration: none; box-shadow: 0 18px 40px -24px rgba(44, 84, 93,.45);
+}
+html.pz .pz-hero__name { font: 500 14px/1.3 var(--pz-sans); color: var(--pz-ink); }
+html.pz .pz-hero__price { font: 400 18px/1.2 var(--pz-serif); color: var(--pz-teal-deep); }
+
+/* entrada: animação CSS pura, não depende do script nem de rolagem */
+html.pz .pz-hero__title { animation: pz-rise .9s var(--pz-ease-out) .1s both; }
+html.pz .pz-hero__lead { animation: pz-rise .9s var(--pz-ease-out) .25s both; }
+html.pz .pz-hero__actions { animation: pz-rise .9s var(--pz-ease-out) .4s both; }
+html.pz .pz-hero__media img { animation: pz-settle 1.4s var(--pz-ease-out) both; }
+html.pz .pz-hero__media figcaption { animation: pz-rise .9s var(--pz-ease-out) .7s both; }
+@keyframes pz-rise { from { opacity: 0; transform: translateY(14px); } }
+@keyframes pz-settle { from { opacity: 0; transform: scale(1.03); } }
+
+/* ---------- Títulos de seção ---------- */
+html.pz .pz-section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 24px; margin: 0 0 32px; }
+html.pz .pz-section-head h2,
+html.pz .pz-vitrine-title strong,
+html.pz .titulo-categoria strong {
+  font-family: var(--pz-serif) !important; font-weight: 400; color: var(--pz-teal-deep) !important;
+  font-size: clamp(28px, 3vw, 40px); line-height: 1.15; margin: 0;
+}
+html.pz .titulo-categoria { border: 0 !important; padding: 0; margin: 0 0 28px; }
+
+/* ---------- Coleções ---------- */
+html.pz .pz-colecoes { scroll-margin-top: 80px; padding: clamp(56px, 8vw, 104px) 0 clamp(32px, 4vw, 56px); }
+html.pz .pz-tiles {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(14px, 2vw, 28px);
+}
+html.pz .pz-tile a { display: block; text-decoration: none; color: inherit; }
+html.pz .pz-tile__img {
+  display: block; position: relative; aspect-ratio: 1 / 1; overflow: hidden;
+  border-radius: var(--pz-r-lg); background: var(--pz-porcelain);
+}
+html.pz .pz-tile__img img {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  transition: transform .7s var(--pz-ease-out);
+}
+/* foto com fundo transparente (spray): inteira, flutuando no fundo claro */
+html.pz .pz-tile--contain .pz-tile__img img { object-fit: contain; padding: 12%; box-sizing: border-box; }
+html.pz .pz-tile a:hover .pz-tile__img img { transform: scale(1.05); }
+/* filete por cima da foto: fotos de fundo branco não se misturam com a página */
+html.pz .pz-tile__img::after { content: ""; position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 0 0 0 1px var(--pz-line); pointer-events: none; }
+html.pz .pz-tile__name {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 14px 2px 0; font: 400 clamp(17px, 1.4vw, 20px)/1.3 var(--pz-serif); color: var(--pz-teal-deep);
+}
+/* seta fina dourada que avança no hover */
+html.pz .pz-tile__name::after {
+  content: ''; flex: none; width: 22px; height: 10px; opacity: .85;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 10'%3E%3Cpath d='M0 5h20M16 1l4 4-4 4' fill='none' stroke='%23b08d4a' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+  transition: transform .3s var(--pz-ease-out);
+}
+html.pz .pz-tile a:hover .pz-tile__name::after { transform: translateX(5px); }
+html.pz .pz-tile a:focus-visible .pz-tile__img { outline: 2px solid var(--pz-teal); outline-offset: 3px; }
+
+/* ---------- Vitrine de produtos ---------- */
+html.pz #corpo { background: var(--pz-paper); padding-bottom: 0; }
+html.pz .secao-principal { padding-top: clamp(32px, 4vw, 56px); }
+html.pz .listagem .listagem-item {
+  height: auto !important; border: 0 !important; background: transparent; padding: 0 0 8px; text-align: left;
+}
+html.pz .listagem .imagem-produto {
+  height: auto !important; aspect-ratio: 1 / 1; background: var(--pz-paper);
+  border: 1px solid var(--pz-line); border-radius: var(--pz-r-lg); overflow: hidden; display: flex; align-items: center; justify-content: center;
+}
+html.pz .listagem .imagem-produto img {
+  width: calc(100% - 16px) !important; height: auto !important; max-width: calc(100% - 16px) !important; max-height: calc(100% - 16px) !important; object-fit: contain;
+  border-radius: calc(var(--pz-r-lg) - 8px);
+}
+/* foto do card fixa: sem zoom e sem troca de foto no hover.
+   A plataforma anexa a 2ª foto (.imagem-zoom) e apaga a principal; a 2ª fica escondida e a principal sempre visível. */
+html.pz .listagem .listagem-item .imagem-produto img,
+html.pz .listagem .listagem-item:hover .imagem-produto img { position: relative !important; top: auto !important; left: auto !important; right: auto !important; bottom: auto !important; margin: 0 !important; transform: none !important; transition: none !important; }
+html.pz .listagem .imagem-produto .imagem-zoom { display: none !important; }
+html.pz .listagem .listagem-item .imagem-produto .imagem-principal { opacity: 1 !important; }
+/* resposta ao hover só na moldura */
+html.pz .listagem .imagem-produto { transition: border-color .2s var(--pz-ease); }
+html.pz .listagem .listagem-item:hover .imagem-produto { border-color: rgba(56, 106, 117, .45); }
+/* o tema também levanta o card inteiro com sombra no hover (ficava uma caixa torta em volta de foto + nome) */
+html.pz .listagem .listagem-item:hover { box-shadow: none !important; transform: none !important; }
+/* respiro entre a moldura da foto e o nome (o tema zerava o padding e deixava 5px) */
+html.pz .listagem .listagem-item .info-produto { padding: 16px 4px 0 !important; margin-top: 0 !important; text-align: left; }
+html.pz .listagem .listagem-item .info-produto .nome-produto { margin-top: 0 !important; }
+html.pz .listagem .nome-produto {
+  font: 400 16px/1.4 var(--pz-sans) !important; color: var(--pz-ink) !important;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: auto; min-height: 2.8em;
+}
+html.pz .listagem .preco-produto { margin-top: 8px; text-align: left; min-height: 46px; }
+html.pz .listagem .preco-produto .preco-venda { display: block; margin-bottom: 2px; }
+html.pz .listagem .preco-venda { font: 400 13px/1.2 var(--pz-sans); color: var(--pz-muted); }
+html.pz .listagem .preco-promocional,
+html.pz .listagem .preco-produto strong { font: 400 20px/1.2 var(--pz-serif) !important; color: var(--pz-teal-deep) !important; }
+html.pz .bandeiras-produto .bandeira-promocao,
+html.pz .bandeira-promocao.fundo-principal {
+  background: var(--pz-paper) !important; color: var(--pz-teal-deep) !important;
+  font: 500 12px/1 var(--pz-sans); letter-spacing: .02em; padding: 7px 10px; border-radius: 999px;
+  border: 1px solid var(--pz-line); box-shadow: none; text-shadow: none;
+}
+html.pz .listagem .acoes-produto .botao-comprar {
+  width: 44px; height: 44px; padding: 0; border-radius: 50% !important;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+html.pz .listagem .acoes-produto .botao-comprar svg { fill: #fff; }
+/* botão de compra vira um círculo no canto da foto; o selo de desconto vai para a esquerda */
+html.pz .listagem .listagem-item { position: relative; }
+html.pz .listagem .acoes-produto { position: absolute !important; top: 10px !important; right: 10px !important; left: auto !important; bottom: auto !important; width: auto !important; transform: none !important; margin: 0; padding: 0; z-index: 3; }
+html.pz .listagem .acoes-produto .botao-comprar::before,
+html.pz .listagem .acoes-produto .botao-comprar::after { content: none !important; display: none !important; }
+html.pz .listagem .acoes-produto .botao-comprar { font-size: 0 !important; min-width: 0; }
+/* o tema escreve "Comprar" dentro do ícone em algumas larguras; no círculo fica só o carrinho */
+html.pz .listagem .acoes-produto .botao-comprar .svg-ico { display: flex; align-items: center; justify-content: center; width: auto !important; margin: 0; }
+html.pz .listagem .acoes-produto .botao-comprar .svg-ico::before,
+html.pz .listagem .acoes-produto .botao-comprar .svg-ico::after { content: none !important; display: none !important; }
+html.pz .listagem .acoes-produto .botao-comprar svg { width: 20px; height: 20px; }
+html.pz .listagem .bandeiras-produto { position: absolute; top: 10px; left: 10px; right: auto; z-index: 2; }
+
+/* setas dos carrosséis: o script move o par para dentro do título; aqui só a aparência.
+   O tema desenha uma seta própria (imagem PNG no ::before); ela é apagada e a seta vira um SVG. */
+html.pz .listagem .flexslider { overflow: visible !important; padding-top: 0 !important; margin-top: 0 !important; }
+/* o tema empilha 5 espaçamentos (~100px) entre o título e os cards */
+html.pz .listagem .flexslider .flex-viewport { padding-top: 6px !important; }
+html.pz .listagem .flexslider .flex-viewport li,
+html.pz .listagem .flexslider .listagem-item { margin-top: 0 !important; }
+/* o tema reservava 20px nas laterais para as setas antigas; os cards passam a alinhar com o título */
+html.pz .listagem ul.produtos-carrossel { padding-left: 0 !important; padding-right: 0 !important; margin-left: calc(-1 * min(20px, var(--pz-gutter))) !important; margin-right: calc(-1 * min(20px, var(--pz-gutter))) !important; }
+html.pz .titulo-categoria.pz-com-setas { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; }
+html.pz .titulo-categoria .flex-direction-nav {
+  position: static !important; display: flex; gap: 10px; flex: none; margin: 0 !important; padding: 0 0 2px !important; list-style: none;
+}
+html.pz .titulo-categoria .flex-direction-nav li { position: static !important; margin: 0; padding: 0; }
+html.pz .listagem .flex-direction-nav a {
+  position: static !important; display: block !important; margin: 0 !important;
+  width: 44px !important; height: 44px !important; padding: 0 !important; box-sizing: border-box;
+  border: 1px solid var(--pz-line) !important; border-radius: 50% !important; box-shadow: none !important;
+  background: var(--pz-paper) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9.5 5.5 16 12l-6.5 6.5' fill='none' stroke='%23213f44' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 20px no-repeat !important;
+  font-size: 0 !important; color: transparent !important; text-indent: -9999px !important; overflow: hidden;
+  opacity: 1 !important; transition: background-color .18s var(--pz-ease), border-color .18s var(--pz-ease), opacity .18s var(--pz-ease);
+}
+html.pz .listagem .flex-direction-nav a::before,
+html.pz .listagem .flex-direction-nav a::after { content: none !important; display: none !important; background: none !important; border: 0 !important; }
+html.pz .listagem .flex-direction-nav a.flex-prev { transform: scaleX(-1); }
+html.pz .listagem .flex-direction-nav a:hover { border-color: var(--pz-teal-deep) !important; background-color: var(--pz-porcelain) !important; }
+html.pz .listagem .flex-direction-nav a:focus-visible { outline: 2px solid var(--pz-teal); outline-offset: 3px; }
+html.pz .listagem .flex-direction-nav a.flex-disabled { display: block !important; opacity: .35 !important; pointer-events: none; }
+/* nada para rolar (todos os produtos cabem): esconde o par */
+html.pz .listagem .flex-direction-nav:not(:has(a:not(.flex-disabled))) { display: none !important; }
+html.pz .listagem .flex-direction-nav a:hover { border-color: var(--pz-teal) !important; }
+
+/* ---------- Cores do tema antigo trocadas pela paleta ---------- */
+html.pz .cor-secundaria,
+html.pz .cor-principal { color: var(--pz-teal-deep) !important; }
+html.pz .fundo-secundario,
+html.pz .fundo-principal { background-color: var(--pz-teal-deep) !important; }
+html.pz .borda-principal { border-color: var(--pz-line) !important; }
+
+/* o tema.css da loja usa vermelho (#ff0000) como cor principal; cada regra dele é refeita aqui */
+html.pz {
+  --cor-principal: #386a75;
+  --cor-botao: #386a75;
+  --cor-secundaria: #386a75;
+}
+html.pz .menu a:hover,
+html.pz .atributo-comum a:hover span,
+html.pz .atributo-comum .active a span { color: var(--pz-teal) !important; }
+html.pz .menu li:hover > a .fundo-secundario { background-color: transparent !important; }
+html.pz .flex-control-paging li a.flex-active,
+html.pz .filtro.lista ul li.active label,
+html.pz .menu-simples li.active a { background-color: var(--pz-teal-deep) !important; color: #fff !important; }
+html.pz .dropdown-menu > li > a:hover,
+html.pz .filtro.lista ul li label:hover,
+html.pz .menu-simples li a:hover { background-color: var(--pz-porcelain) !important; color: var(--pz-teal-deep) !important; }
+html.pz .nav-tabs li.active a,
+html.pz .elastislide-carousel ul li.active a { border-color: var(--pz-teal) !important; }
+
+/* variações (cor, tamanho) na página de produto */
+html.pz .atributos > div > span { font-size: 15px; color: var(--pz-ink); }
+html.pz .atributos ul li a {
+  border: 1px solid var(--pz-line) !important; border-radius: 50%; overflow: hidden; padding: 3px; background: #fff;
+  transition: border-color .15s var(--pz-ease), box-shadow .15s var(--pz-ease);
+}
+html.pz .atributos ul li a span { border-radius: 50%; }
+html.pz .atributos ul li a:hover { border-color: var(--pz-teal) !important; }
+html.pz .atributos ul li.active a,
+html.pz .atributos ul li a.active { border-color: var(--pz-teal-deep) !important; box-shadow: 0 0 0 2px var(--pz-teal-soft); }
+html.pz .atributo-comum ul li a { border-radius: 999px; }
+html.pz .atributo-comum ul li a span { border-radius: 999px; }
+
+/* ---------- Página de categoria e busca ---------- */
+html.pz .categoryTitle h1.titulo,
+html.pz .conteudo > h1.titulo {
+  font: 400 clamp(30px, 3vw, 44px)/1.15 var(--pz-serif) !important; color: var(--pz-teal-deep) !important; margin: 0;
+}
+html.pz .breadcrumbs { border: 0 !important; margin: clamp(16px, 2vw, 28px) auto 8px; font-size: 13px; color: var(--pz-muted); }
+html.pz .breadcrumbs a { color: var(--pz-muted); }
+html.pz .ordenar-listagem { border: 0 !important; }
+html.pz .ordenar-listagem select { border-radius: 999px !important; border: 1px solid var(--pz-line) !important; background: #fff !important; box-shadow: none !important; color: var(--pz-ink) !important; font-family: var(--pz-sans); }
+html.pz .coluna .componente {
+  background: var(--pz-porcelain) !important; border: 0 !important; border-radius: var(--pz-r-md); padding: 4px 0; margin-bottom: 16px;
+}
+html.pz .coluna .componente .titulo {
+  font: 400 19px/1.2 var(--pz-serif) !important; color: var(--pz-teal-deep) !important; border: 0 !important;
+}
+html.pz .coluna .componente .titulo i { display: none; }
+html.pz .coluna .componente a,
+html.pz .coluna .componente label { color: var(--pz-ink); font-size: 14px; }
+html.pz .coluna .newsletter input[type="text"] { border-radius: 999px; border: 1px solid var(--pz-line); box-shadow: none; }
+
+/* paginação */
+html.pz .pagination ul { box-shadow: none; display: flex; gap: 6px; }
+html.pz .pagination ul > li > a { border: 1px solid var(--pz-line) !important; border-radius: 999px !important; min-width: 40px; height: 40px; line-height: 38px; padding: 0 12px; text-align: center; box-sizing: border-box; color: var(--pz-teal-deep); background: #fff; }
+html.pz .pagination ul > li.active > a { background: var(--pz-teal-deep) !important; color: #fff !important; border-color: var(--pz-teal-deep) !important; }
+html.pz .pagination ul > li.disabled > a { color: var(--pz-muted); opacity: .5; }
+
+/* selo "produto adicionado" nos cards (era vermelho no tema antigo) */
+html.pz .bandeira-carrinho,
+html.pz .adicionado-carrinho { background: var(--pz-teal-deep) !important; color: #fff !important; font: 500 12px/1 var(--pz-sans) !important; padding: 7px 10px; border-radius: 999px; text-shadow: none; }
+
+/* selos de estoque */
+html.pz .bandeira-indisponivel,
+html.pz .bandeira-indisponivel.fundo-secundario {
+  background: var(--pz-porcelain) !important; color: var(--pz-muted) !important;
+  font: 500 12px/1 var(--pz-sans) !important; padding: 7px 10px; border-radius: 999px; border: 1px solid var(--pz-line);
+}
+html.pz .avise-me-list-btn { border-radius: 999px !important; background: #fff !important; color: var(--pz-teal-deep) !important; border: 1px solid var(--pz-teal-deep) !important; box-shadow: none !important; text-shadow: none !important; }
+
+/* ---------- Página de produto ---------- */
+html.pz .pagina-produto .principal h1.nome-produto {
+  font: 400 clamp(28px, 2.6vw, 40px)/1.15 var(--pz-serif) !important; color: var(--pz-teal-deep) !important; margin-bottom: 12px;
+}
+html.pz .pagina-produto .principal .codigo-produto { font-size: 13px; color: var(--pz-muted); }
+html.pz .pagina-produto .principal .preco-promocional,
+html.pz .pagina-produto .principal .preco-produto strong { font: 400 32px/1.2 var(--pz-serif) !important; color: var(--pz-teal-deep) !important; }
+html.pz .pagina-produto .principal .preco-venda { color: var(--pz-muted); }
+html.pz .pagina-produto .principal .botao-comprar { min-height: 52px; font-size: 16px; }
+html.pz .pagina-produto .principal input[type="text"],
+html.pz .pagina-produto .principal input[type="tel"] { border-radius: var(--pz-r-sm); border-color: var(--pz-line); box-shadow: none; }
+html.pz .pagina-produto .principal a[class*="lista-desejo"],
+html.pz .pagina-produto .principal .toggle-payments,
+html.pz .pagina-produto .principal .acoes-flutuante a,
+html.pz .pagina-produto .principal a:not(.botao):not(.atributo-item) { color: var(--pz-muted); }
+html.pz .pagina-produto .principal a:not(.botao):not(.atributo-item):hover { color: var(--pz-teal-deep); }
+html.pz .pagina-produto .principal .btn {
+  background: #fff !important; color: var(--pz-teal-deep) !important; border: 1px solid var(--pz-teal-deep) !important;
+  border-radius: 999px !important; box-shadow: none !important; text-shadow: none !important; font-weight: 500;
+}
+html.pz .pagina-produto .principal .btn:hover { background: var(--pz-teal-deep) !important; color: #fff !important; }
+html.pz .pagina-produto .abas-custom,
+html.pz .pagina-produto .abas-custom p { font-size: 16px; line-height: 1.75; color: var(--pz-ink); }
+
+/* ---------- Grade de produtos (categoria, busca) ----------
+   O tema usa itens "inline-block": cards de alturas diferentes se alinham pela linha de texto e um desce.
+   Grade de verdade: topo alinhado e mesma altura por linha. */
+html.pz .listagem .listagem-linha:not(.flexslider) > ul {
+  display: grid !important; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(20px, 2.4vw, 32px) clamp(14px, 2vw, 24px);
+  margin: 0 !important; padding: 0 !important; width: auto !important;
+}
+html.pz .listagem .listagem-linha:not(.flexslider) > ul::before,
+html.pz .listagem .listagem-linha:not(.flexslider) > ul::after { content: none !important; display: none !important; }
+html.pz .listagem .listagem-linha:not(.flexslider) > ul > li { width: auto !important; margin: 0 !important; float: none !important; display: block !important; min-height: 0 !important; }
+html.pz .listagem .listagem-linha:not(.flexslider) .listagem-item { height: 100% !important; margin: 0 !important; }
+@media (max-width: 991px) { html.pz .listagem .listagem-linha:not(.flexslider) > ul { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 767px) { html.pz .listagem .listagem-linha:not(.flexslider) > ul { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* selos empilhados no canto (desconto + indisponível não se atropelam) */
+html.pz .listagem .bandeiras-produto { display: flex !important; flex-direction: column; align-items: flex-start; gap: 6px; }
+html.pz .listagem .bandeiras-produto > span { position: static !important; margin: 0 !important; transform: none !important; }
+
+/* ordenar (categoria e busca): o rótulo ("Relevância") e a setinha são irmãos dentro de .input-append;
+   a pílula é o .input-append inteiro, e o rótulo abre o menu (for="botaoOrdenar") */
+html.pz .ordenar-listagem .input-append {
+  display: inline-flex !important; align-items: center; height: 44px; margin: 0 !important; padding: 0 6px 0 18px;
+  border: 1px solid var(--pz-line); border-radius: 999px; background: #fff; box-sizing: border-box; cursor: pointer;
+  transition: border-color .18s var(--pz-ease);
+}
+html.pz .ordenar-listagem .input-append:hover { border-color: var(--pz-teal-deep); }
+html.pz .ordenar-listagem .input-append > label {
+  display: inline-flex !important; align-items: center; align-self: stretch; margin: 0 !important; padding: 0 !important;
+  border: 0 !important; border-radius: 0 !important; background: none !important; box-shadow: none !important;
+  font: 600 14px/1 var(--pz-sans) !important; color: var(--pz-ink) !important; cursor: pointer; white-space: nowrap;
+}
+html.pz .ordenar-listagem .input-append > label::before { content: 'Ordenar por'; margin-right: 6px; font-weight: 500; color: var(--pz-muted); }
+html.pz .ordenar-listagem .btn-group { display: inline-flex !important; position: relative; margin: 0 !important; border: 0 !important; background: none !important; overflow: visible; }
+html.pz .ordenar-listagem .btn-group > .btn {
+  width: 32px !important; height: 32px !important; min-height: 0 !important; padding: 0 !important; margin: 0 0 0 4px !important;
+  border: 0 !important; border-radius: 50% !important; box-shadow: none !important; text-shadow: none !important;
+  background: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23386a75' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") center / 16px no-repeat !important;
+  transition: transform .2s var(--pz-ease), background-color .2s var(--pz-ease);
+}
+html.pz .ordenar-listagem .btn-group > .btn i { display: none !important; }
+html.pz .ordenar-listagem .btn-group.open > .btn { transform: rotate(180deg); }
+html.pz .ordenar-listagem .input-append:hover .btn-group > .btn { background-color: var(--pz-porcelain) !important; }
+html.pz .ordenar-listagem .dropdown-menu { right: -7px !important; margin-top: 12px !important; min-width: 220px; padding: 6px !important; }
+html.pz .ordenar-listagem .dropdown-menu > li > a { display: flex; align-items: center; min-height: 40px; padding: 0 12px !important; border-radius: 8px; font: 500 14px/1.2 var(--pz-sans) !important; color: var(--pz-ink) !important; white-space: nowrap; }
+html.pz .ordenar-listagem .dropdown-menu > li > a i { display: none !important; }
+html.pz .ordenar-listagem .dropdown-menu > li > a:hover { background: var(--pz-porcelain) !important; color: var(--pz-teal-deep) !important; }
+@media (max-width: 767px) { html.pz .ordenar-listagem .input-append > label::before { content: 'Ordenar:'; } }
+html.pz .ordenar-listagem .dropdown-menu { border: 1px solid var(--pz-line) !important; border-radius: var(--pz-r-md) !important; box-shadow: 0 24px 48px -24px rgba(44, 84, 93,.35) !important; overflow: hidden; }
+
+/* ---------- Áreas de toque (mínimo 44px, padrão de acessibilidade) ---------- */
+/* só no celular, e sem mudar o "display": o tema esconde o botão de menu e as setinhas fora do celular */
+@media (max-width: 767px) {
+  html.pz .theme-functions > li > a,
+  html.pz .theme-functions > li > button,
+  html.pz .theme-functions .carrinho > a,
+  html.pz .menu-dropdown-toggle { min-width: 44px !important; min-height: 44px !important; box-sizing: border-box; }
+  html.pz .theme-functions > li > a,
+  html.pz .theme-functions > li > button,
+  html.pz .theme-functions .carrinho > a { display: inline-flex; align-items: center; justify-content: center; }
+}
+html.pz .pz-link {
+  display: inline-flex; align-items: center; min-height: 44px; padding: 0; border-bottom: 0 !important;
+  text-decoration: underline; text-decoration-color: var(--pz-gold-ink); text-decoration-thickness: 1px; text-underline-offset: 6px;
+}
+html.pz .pz-link:hover { text-decoration-color: var(--pz-teal); }
+html.pz .pagina-produto .principal :is(.lista-desejos, .toggle-payments, a[href*="favorito"], a[href*="desejo"]) { display: inline-flex; align-items: center; min-height: 44px; }
+
+/* produto indisponível: o "Avise-me" do tema ficava invisível mas clicável por cima do nome (e sem hover no celular).
+   Agora fica sempre visível embaixo do nome, em todas as telas. */
+@media all {
+  html.pz .listagem .produto-avise { position: static !important; opacity: 1 !important; visibility: visible !important; top: auto !important; bottom: auto !important; margin-top: 12px; background: none !important; padding: 0 !important; }
+  html.pz .listagem .avise-me-list-descr { display: none !important; }
+}
+html.pz .listagem .avise-me-list-btn { min-height: 44px; display: flex !important; align-items: center; justify-content: center; font: 500 14px/1 var(--pz-sans) !important; width: 100%; box-sizing: border-box; }
+html.pz .listagem .avise-me-list-btn:hover { background: var(--pz-teal-deep) !important; color: #fff !important; }
+html.pz .listagem-item.indisponivel .nome-produto { opacity: .7 !important; }
+
+/* "Filtrar" (celular) e botão de compra desativado (antes de escolher a variação) */
+html.pz .filtro-mobile .btn {
+  min-height: 44px; padding: 0 18px !important; border: 1px solid var(--pz-line) !important; border-radius: 999px !important;
+  background: #fff !important; box-shadow: none !important; text-shadow: none !important; color: var(--pz-teal-deep) !important; font: 500 14px/1 var(--pz-sans) !important;
+}
+html.pz .botao.principal.desativo,
+html.pz .botao.principal[disabled] { border-radius: 999px !important; background: var(--pz-teal-deep) !important; opacity: .45; cursor: not-allowed; }
+
+/* links pequenos: área de toque de 44px sem mudar o desenho (padding compensado por margem negativa) */
+html.pz .pagina-login .recuperar-senha,
+html.pz .pagina-produto .principal a[itemprop="url"] { display: inline-block; padding: 12px 0 !important; margin-top: -12px !important; margin-bottom: -12px !important; }
+
+/* galeria do produto: as miniaturas flutuam ao lado da foto e são mais altas que ela; o bloco passa a contê-las
+   (sem isso, título e descrição sobem por cima das miniaturas) */
+html.pz .pagina-produto .produto > .row-fluid > .span7 { display: flow-root; }
+
+/* ---------- Tablet (768–991px): colunas fixas do tema ficavam espremidas ---------- */
+@media (max-width: 991px) {
+  /* produto: galeria em cima, informações embaixo (antes a coluna de compra tinha 232px e o CEP vazava) */
+  html.pz .pagina-produto .produto > .row-fluid > [class*="span"] { width: 100% !important; float: none !important; margin-left: 0 !important; }
+  html.pz .pagina-produto .produto > .row-fluid > .span5 { margin-top: 24px !important; }
+  html.pz .pagina-produto .produto .principal { padding-left: 0 !important; }
+  /* categoria e busca: filtros em cima, produtos com a largura toda */
+  html.pz :is(.pagina-categoria, .pagina-busca) .secao-principal > .coluna,
+  html.pz :is(.pagina-categoria, .pagina-busca) .secao-principal > .conteudo { width: 100% !important; float: none !important; margin-left: 0 !important; }
+  html.pz :is(.pagina-categoria, .pagina-busca) .secao-principal > .coluna { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 8px; }
+  html.pz :is(.pagina-categoria, .pagina-busca) .secao-principal > .coluna > .lateral { flex: 1 1 220px; width: auto !important; margin: 0 !important; }
+  html.pz :is(.pagina-categoria, .pagina-busca) .secao-principal > .coluna > .componente { flex: 1 1 100%; margin: 0 !important; }
+}
+/* newsletter da lateral repete a faixa do rodapé */
+html.pz .coluna .componente.newsletter,
+html.pz .coluna > .row-fluid:has(.newsletter) { display: none !important; }
+/* CEP: campo ocupa o espaço, botão do tamanho do texto */
+html.pz .pagina-produto .cep .input-append { display: flex !important; width: 100% !important; max-width: 420px; }
+html.pz .pagina-produto .cep .input-append input { flex: 1; min-width: 0; width: auto !important; height: 44px; box-sizing: border-box; border-radius: 999px 0 0 999px !important; }
+html.pz .pagina-produto .cep .input-append input { border: 1px solid rgba(44, 84, 93,.22) !important; border-right: 0 !important; padding: 0 18px !important; }
+html.pz #corpo .principal .cep .input-append button.btn.btn { flex: none; height: 44px; padding: 0 22px !important; border: 0 !important; border-radius: 0 999px 999px 0 !important; background: var(--pz-teal-deep) !important; background-color: var(--pz-teal-deep) !important; background-image: none !important; color: #fff !important; }
+html.pz #corpo .principal .cep .input-append button.btn.btn:hover { background-color: var(--pz-teal) !important; }
+
+/* ---------- Galeria do produto: miniaturas embaixo da foto, em grade ----------
+   O tema usa uma coluna vertical (computador) e um carrossel (celular) com fotos 64×50 recortadas.
+   Os dois viram a mesma grade embaixo da foto principal; o script troca as miniaturas por versões maiores. */
+html.pz .pagina-produto .produto > .row-fluid > .span7 { display: flex !important; flex-direction: column; gap: 16px; }
+html.pz .pagina-produto .span7 > .conteiner-imagem { order: 1; width: 100% !important; float: none !important; margin: 0 !important; }
+html.pz .pagina-produto .span7 > .thumbs-vertical,
+html.pz .pagina-produto .span7 > .thumbs-horizontal { order: 2; width: 100% !important; height: auto !important; float: none !important; margin: 0 !important; padding: 0 !important; }
+html.pz .pagina-produto :is(.thumbs-vertical, .thumbs-horizontal) :is(.produto-thumbs, .flexslider, .flex-viewport) {
+  width: auto !important; height: auto !important; max-height: none !important; overflow: visible !important; margin: 0 !important; padding: 0 !important; border: 0 !important; background: none !important;
+}
+html.pz .pagina-produto :is(.thumbs-vertical, .thumbs-horizontal) .flex-viewport > ul,
+html.pz .pagina-produto :is(.thumbs-vertical, .thumbs-horizontal) ul.miniaturas {
+  display: grid !important; grid-template-columns: repeat(auto-fill, minmax(76px, 1fr)); gap: 10px;
+  width: auto !important; height: auto !important; margin: 0 !important; padding: 0 !important;
+  position: static !important; transform: none !important; transition: none !important; list-style: none;
+}
+html.pz .pagina-produto :is(.thumbs-vertical, .thumbs-horizontal) li {
+  width: auto !important; height: auto !important; float: none !important; margin: 0 !important; padding: 0 !important; display: block !important;
+}
+html.pz .pagina-produto :is(.thumbs-vertical, .thumbs-horizontal) li.clone,
+html.pz .pagina-produto :is(.thumbs-vertical, .thumbs-horizontal) .flex-direction-nav { display: none !important; }
+html.pz .pagina-produto :is(.thumbs-vertical, .thumbs-horizontal) li > a {
+  display: block; aspect-ratio: 1 / 1; padding: 6px; box-sizing: border-box; overflow: hidden;
+  background: #fff; border: 1px solid var(--pz-line) !important; border-radius: var(--pz-r-md);
+  transition: border-color .15s var(--pz-ease), box-shadow .15s var(--pz-ease);
+}
+html.pz .pagina-produto :is(.thumbs-vertical, .thumbs-horizontal) li > a > span { display: block; width: 100%; height: 100%; }
+html.pz .pagina-produto :is(.thumbs-vertical, .thumbs-horizontal) li img {
+  display: block; width: 100% !important; height: 100% !important; max-width: none !important; max-height: none !important;
+  object-fit: contain; border-radius: calc(var(--pz-r-md) - 4px); opacity: 1 !important;
+}
+html.pz .pagina-produto :is(.thumbs-vertical, .thumbs-horizontal) li > a:hover { border-color: var(--pz-teal) !important; }
+html.pz .pagina-produto :is(.thumbs-vertical, .thumbs-horizontal) li.active > a { border-color: var(--pz-teal-deep) !important; box-shadow: 0 0 0 1px var(--pz-teal-deep); }
+/* só uma das duas grades aparece (a do tema para cada tamanho já faz isso); a vertical vira horizontal */
+html.pz .pagina-produto .conteiner-imagem img#imagemProduto { border-radius: var(--pz-r-lg); }
+
+/* ---------- Menu lateral (celular) ---------- */
+@media (max-width: 767px) {
+  html.pz .menu.superior {
+    width: min(86vw, 340px) !important; max-width: none !important; padding: 76px 24px 32px !important; box-sizing: border-box;
+    z-index: 2100 !important; /* acima do cabeçalho fixo (1000) */
+    box-shadow: 24px 0 48px -24px rgba(44, 84, 93,.45); overflow-y: auto;
+  }
+  /* o ::before do menu é o fundo escuro do tema (atrás do painel); só troca o tom */
+  html.pz .menu.superior.menu-visible::before { background-color: rgba(28, 28, 28, .55) !important; left: min(86vw, 340px) !important; right: 0 !important; width: auto !important; }
+  html.pz .menu.superior .menu-close-mobile {
+    position: absolute !important; top: 12px !important; right: 12px !important; left: auto !important;
+    width: 44px !important; height: 44px !important; margin: 0 !important; padding: 0 !important;
+    display: flex !important; align-items: center; justify-content: center;
+    background: #fff !important; border: 1px solid var(--pz-line) !important; border-radius: 50% !important; box-shadow: none !important;
+  }
+  html.pz .menu.superior .menu-close-mobile svg { width: 16px !important; height: 16px !important; fill: var(--pz-teal-deep); }
+  html.pz .menu.superior .nivel-um { display: block !important; margin: 0 !important; padding: 0 !important; border-top: 1px solid var(--pz-line); }
+  html.pz .menu.superior .nivel-um > li {
+    display: grid !important; grid-template-columns: minmax(0, 1fr) 44px; align-items: center;
+    border-bottom: 1px solid var(--pz-line); padding: 0 !important; margin: 0 !important; width: auto !important; float: none !important;
+  }
+  html.pz .menu.superior .nivel-um > li > a { grid-column: 1; padding: 16px 0 !important; display: block; }
+  html.pz .menu.superior .nivel-um > li > a > i { display: none !important; }
+  html.pz .menu.superior .nivel-um > li > a .titulo { font: 400 20px/1.25 var(--pz-serif) !important; color: var(--pz-teal-deep) !important; white-space: normal; }
+  html.pz .menu.superior .nivel-um > li > .menu-dropdown-toggle {
+    grid-column: 2; justify-self: end; width: 44px !important; height: 44px !important; margin: 0 !important; padding: 0 !important;
+    display: flex !important; align-items: center; justify-content: center; background: none !important; border: 0 !important;
+  }
+  html.pz .menu.superior .nivel-um > li > .nivel-dois { grid-column: 1 / -1; margin: 0 0 12px !important; padding: 0 !important; position: static !important; width: auto !important; box-shadow: none !important; border: 0 !important; background: none !important; }
+  html.pz .menu.superior .nivel-dois > li { border: 0 !important; padding: 0 !important; display: grid; grid-template-columns: minmax(0, 1fr) 44px; align-items: center; }
+  html.pz .menu.superior .nivel-dois > li > a { grid-column: 1; padding: 11px 0 !important; font: 400 16px/1.35 var(--pz-sans) !important; color: var(--pz-ink) !important; white-space: normal; }
+  html.pz .menu.superior .nivel-dois > li > .menu-dropdown-toggle { grid-column: 2; justify-self: end; width: 44px; height: 44px; display: flex !important; align-items: center; justify-content: center; background: none !important; border: 0 !important; }
+  html.pz .menu.superior .nivel-dois > li > .nivel-tres { grid-column: 1 / -1; margin: 0 0 6px 14px !important; padding: 0 0 0 12px !important; border-left: 1px solid var(--pz-line) !important; position: static !important; box-shadow: none !important; background: none !important; }
+  html.pz .menu.superior .nivel-tres a { padding: 8px 0 !important; font: 400 15px/1.35 var(--pz-sans) !important; color: var(--pz-muted) !important; display: block; }
+}
+
+/* ---------- Carrossel no celular: um produto por vez, com espaço, rolagem nativa com encaixe ----------
+   O carrossel do tema calcula a largura dos cards para uma tela maior e mostra 1,5 card. */
+@media (max-width: 767px) {
+  html.pz .listagem .flexslider .flex-viewport {
+    overflow-x: auto !important; overflow-y: hidden !important; height: auto !important;
+    scroll-snap-type: x mandatory; scrollbar-width: none; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain;
+  }
+  html.pz .listagem .flexslider .flex-viewport::-webkit-scrollbar { display: none; }
+  html.pz .listagem .flexslider .flex-viewport > ul {
+    display: flex !important; gap: 16px; width: auto !important; margin: 0 !important; padding: 0 !important;
+    transform: none !important; transition: none !important; position: static !important;
+  }
+  html.pz .listagem .flexslider .flex-viewport > ul > li {
+    flex: 0 0 100% !important; width: auto !important; margin: 0 !important; float: none !important; scroll-snap-align: start;
+  }
+  html.pz .listagem .flexslider .flex-viewport > ul > li.clone { display: none !important; }
+  html.pz .listagem .flexslider .flex-viewport .listagem-item { width: auto !important; height: auto !important; min-height: 0 !important; margin: 0 !important; }
+  html.pz .listagem .flexslider .flex-viewport > ul { align-items: flex-start; }
+  html.pz .listagem .flexslider .flex-viewport > ul > li { height: auto !important; min-width: 0 !important; max-width: 100% !important; overflow: hidden; }
+  /* só os blocos do card: a foto mantém sua margem interna (max-width: calc(100% - 16px)) */
+  html.pz .listagem .flexslider .flex-viewport .listagem-item,
+  html.pz .listagem .flexslider .flex-viewport .listagem-item > * { max-width: 100%; }
+}
+
+/* ---------- Botão flutuante do WhatsApp (código da loja empurra o ícone 10px para baixo e 3px para a direita) ---------- */
+html.pz a[href*="wa.me"][style*="position:fixed"] {
+  display: flex !important; align-items: center; justify-content: center;
+  box-shadow: 0 10px 24px -10px rgba(0, 0, 0, .45) !important; transition: transform .18s var(--pz-ease);
+}
+html.pz a[href*="wa.me"][style*="position:fixed"]:hover { transform: translateY(-2px); }
+html.pz a[href*="wa.me"][style*="position:fixed"] > i { margin: 0 !important; line-height: 1 !important; display: block; }
+
+/* ---------- Produto: botão de compra e seletor de quantidade ---------- */
+html.pz .pagina-produto .principal .botao-comprar { border-radius: 999px !important; }
+/* seletor de quantidade e botão de compra na mesma linha */
+html.pz .pagina-produto .principal .comprar { display: flex !important; align-items: center; gap: 12px; flex-wrap: wrap; }
+html.pz .pagina-produto .principal .comprar > .disponibilidade-produto { flex: 1 1 100%; }
+html.pz .pagina-produto .principal .comprar > .botao-comprar { flex: 1 1 0; min-width: 140px; padding-left: 20px !important; padding-right: 20px !important; width: auto !important; min-height: 52px; margin: 0 !important; display: flex !important; align-items: center; justify-content: center; }
+html.pz .pagina-produto .principal .preco-venda,
+html.pz .pagina-produto .principal s { color: var(--pz-muted) !important; opacity: 1 !important; }
+/* seletor − 1 + em pílula: o tema sobrepõe os botões ao campo com posição absoluta */
+html.pz .pagina-produto .qtde-adicionar-carrinho {
+  display: inline-flex !important; align-items: center; flex: none; width: auto !important; height: 52px; margin: 0 !important; padding: 0 4px !important;
+  border: 1px solid rgba(44, 84, 93, .22) !important; border-radius: 999px !important; background: #fff; box-sizing: border-box; vertical-align: middle;
+}
+html.pz .pagina-produto .qtde-adicionar-carrinho .minus,
+html.pz .pagina-produto .qtde-adicionar-carrinho .plus {
+  position: static !important; transform: none !important; top: auto !important; width: 40px !important; height: 40px !important; margin: 0 !important; padding: 0 !important;
+  display: flex !important; align-items: center; justify-content: center; border: 0 !important; border-radius: 50% !important;
+  background: transparent !important; color: var(--pz-teal-deep) !important; box-shadow: none !important; cursor: pointer;
+}
+html.pz .pagina-produto .qtde-adicionar-carrinho .minus { order: 0; }
+html.pz .pagina-produto .qtde-adicionar-carrinho .plus { order: 2; }
+html.pz .pagina-produto .qtde-adicionar-carrinho :is(.minus, .plus):hover { background: var(--pz-porcelain) !important; }
+html.pz .pagina-produto .qtde-adicionar-carrinho input.qtde-carrinho {
+  order: 1; position: static !important; transform: none !important; width: 40px !important; height: 40px !important; margin: 0 !important; padding: 0 !important;
+  border: 0 !important; background: transparent !important; box-shadow: none !important; text-align: center;
+  font: 500 16px/1 var(--pz-sans) !important; color: var(--pz-ink); -moz-appearance: textfield;
+}
+html.pz .pagina-produto .qtde-adicionar-carrinho input.qtde-carrinho::-webkit-inner-spin-button,
+html.pz .pagina-produto .qtde-adicionar-carrinho input.qtde-carrinho::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+
+/* ---------- Busca sem resultado e páginas de erro: botão secundário no padrão ---------- */
+html.pz .botao.secundario {
+  display: inline-flex !important; align-items: center; justify-content: center; min-height: 48px; padding: 0 28px !important;
+  border: 1px solid var(--pz-teal-deep) !important; border-radius: 999px !important; background: #fff !important;
+  color: var(--pz-teal-deep) !important; box-shadow: none !important; text-shadow: none !important; font: 500 15px/1 var(--pz-sans) !important;
+}
+html.pz .botao.secundario:hover { background: var(--pz-teal-deep) !important; color: #fff !important; }
+
+/* ---------- Hambúrguer (celular) ----------
+   O tema desenha os traços com bordas e pseudo-elementos; tudo isso é apagado e o script põe
+   o ícone padrão (3 traços iguais, pontas arredondadas, 24px) dentro de uma área de toque de 44px. */
+@media (max-width: 767px) {
+  html.pz .menu-trigger {
+    position: relative !important; display: inline-flex !important; align-items: center; justify-content: center;
+    width: 44px !important; height: 44px !important; padding: 0 !important; margin: 0 4px 0 -10px !important;
+    border: 0 !important; border-radius: 50%; background: transparent !important; box-shadow: none !important;
+    color: var(--pz-teal-deep) !important; cursor: pointer; transition: background-color .2s var(--pz-ease);
+  }
+  html.pz .menu-trigger::before,
+  html.pz .menu-trigger::after { content: none !important; display: none !important; }
+  html.pz .menu-trigger .pz-burger { display: block; width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; pointer-events: none; }
+  html.pz .menu-trigger:hover,
+  html.pz .menu-trigger:focus-visible { background-color: var(--pz-porcelain) !important; }
+}
+
+/* ---------- Identidade olfativa ---------- */
+html.pz .pz-olfativa {
+  margin: clamp(56px, 8vw, 104px) 0; border-radius: var(--pz-r-lg);
+  background: var(--pz-teal-deep); color: #fff; position: relative; overflow: hidden;
+}
+html.pz .pz-olfativa::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(120% 90% at 100% 0%, rgba(216, 164, 104,.22), transparent 60%);
+  pointer-events: none;
+}
+html.pz .pz-olfativa__inner {
+  position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 5vw, 80px); align-items: end;
+  padding: clamp(40px, 6vw, 88px);
+}
+html.pz .pz-olfativa h2 { color: #fff; font-size: clamp(30px, 3.6vw, 50px); line-height: 1.1; margin: 0; max-width: 14ch; }
+html.pz .pz-olfativa p { color: rgba(255,255,255,.92); font-size: 17px; line-height: 1.7; margin: 0 0 28px; max-width: 46ch; }
+
+/* revelação simples */
+html.pz .pz-reveal { opacity: 0; transform: translateY(18px); transition: opacity .8s var(--pz-ease-out), transform .8s var(--pz-ease-out); }
+html.pz .pz-reveal.is-in { opacity: 1; transform: none; }
+
+/* ---------- Newsletter ----------
+   O tema troca o layout da faixa em cada largura (campo de 30px, botão de 254px, sem margem).
+   Aqui a faixa tem grade própria: título e texto à esquerda, formulário à direita; no celular, empilha. */
+html.pz #barraNewsletter,
+html.pz #barraNewsletter .componente,
+html.pz #barraNewsletter.posicao-rodape .conteiner { background: var(--pz-porcelain) !important; color: var(--pz-ink) !important; border: 0 !important; box-shadow: none !important; }
+html.pz #barraNewsletter { display: block !important; padding: clamp(36px, 5vw, 56px) 0 !important; border-top: 1px solid var(--pz-line) !important; }
+html.pz #barraNewsletter .conteiner {
+  max-width: var(--pz-max) !important; width: auto !important; margin: 0 auto !important;
+  padding: 0 var(--pz-gutter) !important; box-sizing: border-box;
+}
+html.pz #barraNewsletter .row-fluid,
+html.pz #barraNewsletter .span,
+html.pz #barraNewsletter .componente { width: auto !important; margin: 0 !important; padding: 0 !important; float: none !important; min-height: 0; }
+html.pz #barraNewsletter .interno {
+  display: grid !important; grid-template-columns: minmax(0, 1fr) minmax(0, 440px);
+  grid-template-areas: "titulo form" "texto form";
+  column-gap: clamp(24px, 5vw, 80px); row-gap: 6px; align-items: center; padding: 0 !important;
+}
+html.pz #barraNewsletter .interno-conteudo { display: contents !important; }
+html.pz #barraNewsletter .titulo {
+  grid-area: titulo; align-self: end; display: block !important; margin: 0 !important; padding: 0 !important;
+  font: 400 clamp(26px, 2.6vw, 34px)/1.15 var(--pz-serif) !important; color: var(--pz-teal-deep) !important; border: 0 !important;
+}
+html.pz #barraNewsletter .titulo i { display: none !important; }
+html.pz #barraNewsletter .texto-newsletter {
+  grid-area: texto; align-self: start; display: block !important; margin: 0 !important; width: auto !important;
+  font: 400 16px/1.5 var(--pz-sans) !important; color: var(--pz-muted) !important; text-align: left !important;
+}
+html.pz #barraNewsletter .newsletter-cadastro.input-conteiner {
+  grid-area: form; position: relative; display: block !important; width: 100% !important; margin: 0 !important; padding: 0 !important;
+}
+html.pz #barraNewsletter .newsletter-confirmacao { grid-area: form; font-size: 15px; color: var(--pz-teal-deep); }
+html.pz #barraNewsletter .newsletter-confirmacao i { display: none; }
+html.pz #barraNewsletter input[type="text"] {
+  display: block !important; float: none !important; width: 100% !important; min-width: 0 !important; max-width: none !important;
+  height: 56px !important; margin: 0 !important; padding: 0 128px 0 22px !important; box-sizing: border-box;
+  border: 1px solid rgba(44, 84, 93, .2) !important; border-radius: 999px !important; background: #fff !important;
+  box-shadow: none !important; font: 400 16px/1 var(--pz-sans) !important; color: var(--pz-ink);
+}
+html.pz #barraNewsletter input[type="text"]:focus { border-color: var(--pz-teal) !important; box-shadow: 0 0 0 3px var(--pz-teal-soft) !important; outline: none; }
+html.pz #barraNewsletter .newsletter-assinar {
+  position: absolute !important; top: 6px !important; right: 6px !important; bottom: 6px !important; left: auto !important;
+  width: auto !important; min-width: 0 !important; height: auto !important; margin: 0 !important; padding: 0 22px !important;
+  border: 0 !important; border-radius: 999px !important; background: var(--pz-teal-deep) !important; box-shadow: none !important; text-shadow: none !important;
+  font-size: 0 !important; color: #fff !important; cursor: pointer; transition: background-color .18s var(--pz-ease);
+}
+html.pz #barraNewsletter .newsletter-assinar:hover { background: var(--pz-teal) !important; }
+/* o botão vem vazio (só ícone quebrado do tema): escreve "Assinar" e apaga o ícone */
+html.pz #barraNewsletter .newsletter-assinar::before {
+  content: 'Assinar' !important; position: static !important; display: block; width: auto; height: auto; border: 0 !important; transform: none !important;
+  font: 500 15px/1 var(--pz-sans) !important; color: #fff; letter-spacing: .02em;
+}
+html.pz #barraNewsletter .newsletter-assinar::after { content: none !important; display: none !important; }
+@media (max-width: 767px) {
+  html.pz #barraNewsletter .interno { grid-template-columns: minmax(0, 1fr); grid-template-areas: "titulo" "texto" "form"; row-gap: 8px; }
+  html.pz #barraNewsletter .newsletter-cadastro.input-conteiner,
+  html.pz #barraNewsletter .newsletter-confirmacao { margin-top: 12px !important; }
+}
+
+/* seta própria nos botões de assinar do popup (a fonte de ícones do tema não carrega) */
+html.pz .newsletter-assinar { font-size: 0 !important; position: relative; }
+html.pz .newsletter-assinar::before {
+  content: '' !important; position: absolute; left: 50%; top: 50%; width: 8px; height: 8px;
+  border: solid #fff; border-width: 1.5px 1.5px 0 0; transform: translate(-65%, -50%) rotate(45deg);
+}
+
+/* popup de newsletter da plataforma */
+html.pz .fancybox-overlay { background: rgba(44, 84, 93, .55) !important; }
+html.pz .modal-modalNewsletter .fancybox-skin {
+  background: var(--pz-paper) !important; border-radius: var(--pz-r-lg) !important; padding: 0 !important;
+  box-shadow: 0 40px 80px -32px rgba(44, 84, 93,.6) !important; border-top: 3px solid var(--pz-gold);
+}
+html.pz .modal-modalNewsletter .fancybox-inner { width: auto !important; height: auto !important; overflow: visible !important; }
+html.pz .modal-modalNewsletter .componente { border: 0 !important; background: transparent !important; margin: 0; }
+html.pz .modal-modalNewsletter .interno { padding: 32px 28px 28px; }
+html.pz .modal-modalNewsletter .titulo {
+  display: block; font: 400 28px/1.15 var(--pz-serif) !important; color: var(--pz-teal-deep) !important; margin: 0 0 8px;
+}
+html.pz .modal-modalNewsletter .titulo i { display: none; }
+html.pz .modal-modalNewsletter .texto-newsletter { font-size: 15px; color: var(--pz-muted); margin: 0 0 20px; }
+html.pz .modal-modalNewsletter .input-conteiner { display: flex; }
+html.pz .modal-modalNewsletter input[type="text"] {
+  flex: 1; min-width: 0; height: 48px; margin: 0; padding: 0 18px; box-sizing: border-box;
+  border: 1px solid var(--pz-line); border-right: 0; border-radius: 999px 0 0 999px; box-shadow: none; font-size: 15px;
+}
+html.pz .modal-modalNewsletter .newsletter-assinar {
+  height: 48px; width: 56px; flex: none; border: 0; border-radius: 0 999px 999px 0;
+  background: var(--pz-teal-deep) !important; color: #fff; font-size: 14px;
+}
+html.pz .modal-modalNewsletter .interno { padding-right: 48px; }
+html.pz .modal-modalNewsletter .fancybox-close {
+  top: 12px !important; right: 12px !important; width: 32px; height: 32px; background: none !important;
+}
+html.pz .modal-modalNewsletter .fancybox-close::before {
+  content: '×'; display: block; font: 300 30px/30px var(--pz-sans); color: var(--pz-teal-deep); text-align: center;
+}
+
+/* janela "produto adicionado" (mini carrinho da plataforma) */
+html.pz .modal-comprar-ajax-status .fancybox-skin { border-radius: var(--pz-r-lg) !important; box-shadow: 0 40px 80px -32px rgba(44, 84, 93,.6) !important; }
+html.pz .modal-comprar-ajax-status th { font: 500 13px/1.3 var(--pz-sans); color: var(--pz-muted); text-transform: none; }
+html.pz .modal-comprar-ajax-status .produto-info a { font: 400 17px/1.3 var(--pz-serif) !important; color: var(--pz-teal-deep) !important; }
+html.pz .modal-comprar-ajax-status .imagem img { border-radius: var(--pz-r-sm); }
+/* a fonte de ícones do tema não tem esses símbolos (já quebrava no site original): desenho com CSS */
+html.pz :is(.modal-comprar-ajax-status, .tabela-carrinho) .quantidade a[class*="icon-"],
+html.pz :is(.modal-comprar-ajax-status, .tabela-carrinho) .excluir a[class*="icon-"] {
+  position: relative; display: inline-block; width: 28px; height: 28px; vertical-align: middle;
+  border: 1px solid var(--pz-line); border-radius: 50%; font-size: 0 !important; text-decoration: none;
+}
+html.pz :is(.modal-comprar-ajax-status, .tabela-carrinho) .quantidade a[class*="icon-"]::before,
+html.pz :is(.modal-comprar-ajax-status, .tabela-carrinho) .quantidade a.icon-plus::after {
+  content: '' !important; position: absolute; left: 50%; top: 50%; width: 10px; height: 1.5px;
+  background: var(--pz-teal-deep); transform: translate(-50%, -50%); font-size: 0;
+}
+html.pz :is(.modal-comprar-ajax-status, .tabela-carrinho) .quantidade a.icon-plus::after { transform: translate(-50%, -50%) rotate(90deg); }
+html.pz :is(.modal-comprar-ajax-status, .tabela-carrinho) .excluir a[class*="icon-"]::before {
+  content: '×' !important; position: absolute; inset: 0; font: 300 20px/26px var(--pz-sans) !important; color: var(--pz-muted); text-align: center;
+}
+html.pz :is(.modal-comprar-ajax-status, .tabela-carrinho) .excluir a:hover::before { color: var(--pz-teal-deep); }
+html.pz :is(.modal-comprar-ajax-status, .tabela-carrinho) .quantidade input { border-radius: var(--pz-r-sm); border-color: var(--pz-line); box-shadow: none; text-align: center; }
+html.pz :is(.modal-comprar-ajax-status, .tabela-carrinho) .input-append input { height: 40px; border-radius: 999px 0 0 999px !important; border: 1px solid var(--pz-line); box-shadow: none; padding: 0 14px; box-sizing: border-box; }
+html.pz :is(.modal-comprar-ajax-status, .tabela-carrinho) .input-append .btn {
+  height: 40px; border-radius: 0 999px 999px 0 !important; background: var(--pz-teal-deep) !important; color: #fff !important;
+  border: 0 !important; text-shadow: none !important; box-shadow: none !important; font-weight: 500;
+}
+html.pz .modal-comprar-ajax-status .continuar-comprando { background: none !important; border: 0 !important; box-shadow: none !important; color: var(--pz-teal-deep) !important; text-decoration: underline; text-underline-offset: 3px; }
+html.pz .modal-comprar-ajax-status .ir-carrinho { padding: 0 24px !important; min-height: 46px; line-height: 46px !important; }
+html.pz .modal-comprar-ajax-status .ir-carrinho i { display: none; }
+
+/* ---------- Busca (abre por cima da página) ---------- */
+html.pz #search-form { background: rgba(28, 28, 28, .5) !important; z-index: 2000; }
+html.pz #search-form > div {
+  position: absolute !important; top: 0 !important; left: 0 !important; right: 0 !important; bottom: auto !important;
+  width: auto !important; max-width: none !important; height: auto !important; margin: 0 !important; transform: none !important;
+  display: flex; align-items: center; gap: 12px;
+  padding: 20px var(--pz-gutter); background: var(--pz-paper);
+  box-shadow: 0 24px 48px -24px rgba(44, 84, 93,.45); border-bottom: 1px solid var(--pz-line);
+}
+/* campo em pílula com a lupa dentro, à direita (sem emenda entre campo e botão) */
+html.pz #search-form form {
+  position: relative !important; flex: 1; display: block; min-width: 0 !important;
+  max-width: 760px; width: auto !important; margin: 0 auto !important;
+}
+html.pz #search-form form input[type="text"] {
+  display: block; width: 100% !important; max-width: none !important; height: 56px; margin: 0; box-sizing: border-box;
+  position: static !important; padding: 0 72px 0 24px !important;
+  border: 1px solid var(--pz-line) !important; border-radius: 999px !important;
+  background: var(--pz-porcelain) !important; box-shadow: none !important; font: 400 17px/1 var(--pz-sans) !important; color: var(--pz-ink);
+}
+html.pz #search-form form input[type="text"]:focus { background: #fff !important; border-color: var(--pz-teal) !important; box-shadow: 0 0 0 3px var(--pz-teal-soft) !important; outline: none; }
+html.pz #search-form form .botao-busca {
+  position: absolute !important; top: 50% !important; right: 6px !important; left: auto !important; bottom: auto !important;
+  transform: translateY(-50%); width: 44px !important; height: 44px !important; margin: 0 !important; padding: 0 !important;
+  border: 0 !important; border-radius: 50% !important; background: var(--pz-teal-deep) !important;
+  font-size: 0 !important; color: transparent !important; box-shadow: none !important; text-shadow: none !important;
+  transition: background-color .18s var(--pz-ease);
+}
+html.pz #search-form form .botao-busca:hover { background: var(--pz-teal) !important; }
+/* lupa desenhada: o glifo da fonte de ícones do tema falha em alguns aparelhos */
+html.pz #search-form form .botao-busca::before {
+  content: '' !important; position: absolute; left: 50%; top: 50%; width: 14px; height: 14px; margin: 0;
+  border: 2px solid #fff; border-radius: 50%; transform: translate(-60%, -60%); box-sizing: border-box; font-size: 0;
+}
+html.pz #search-form form .botao-busca::after {
+  content: ''; position: absolute; left: 50%; top: 50%; width: 7px; height: 2px; background: #fff; border-radius: 1px;
+  transform: translate(2px, 4px) rotate(45deg);
+}
+html.pz #search-form > div > button {
+  position: static !important; order: 2; flex: none; width: 44px !important; height: 44px !important; padding: 0 !important; margin: 0 !important;
+  border: 1px solid var(--pz-line) !important; border-radius: 50% !important; background: #fff !important;
+  display: flex; align-items: center; justify-content: center;
+}
+html.pz #search-form > div > button svg { width: 18px; height: 18px; fill: var(--pz-teal-deep); }
+html.pz .ui-autocomplete { border: 1px solid var(--pz-line) !important; border-radius: var(--pz-r-md); box-shadow: 0 24px 48px -24px rgba(44, 84, 93,.35); padding: 8px 0; z-index: 2001 !important; }
+html.pz .ui-autocomplete a { font: 400 15px/1.3 var(--pz-sans) !important; color: var(--pz-ink) !important; }
+html.pz .ui-autocomplete .ui-state-focus, html.pz .ui-autocomplete a:hover { background: var(--pz-porcelain) !important; border: 0 !important; }
+
+/* ---------- Cabeçalho interno (login e carrinho) ---------- */
+html.pz .cabecalho-interno h1.titulo {
+  font: 400 clamp(32px, 3.2vw, 46px)/1.1 var(--pz-serif) !important; color: var(--pz-teal-deep) !important; margin: clamp(24px, 4vw, 48px) 0 8px;
+}
+html.pz .cabecalho-interno h1 small { display: block; margin-top: 10px; font: 400 16px/1.5 var(--pz-sans) !important; color: var(--pz-muted) !important; }
+html.pz :is(.pagina-login, .pagina-carrinho) .caixa-sombreada {
+  background: var(--pz-paper); border: 1px solid var(--pz-line) !important; border-radius: var(--pz-r-lg) !important;
+  box-shadow: none !important; padding: clamp(20px, 3vw, 36px) !important; box-sizing: border-box;
+}
+html.pz :is(.pagina-login, .pagina-carrinho) .alert {
+  border: 0; border-left: 3px solid var(--pz-gold); border-radius: var(--pz-r-sm);
+  background: var(--pz-porcelain) !important; color: var(--pz-ink) !important; text-shadow: none; font-size: 15px; padding: 14px 18px;
+}
+html.pz :is(.pagina-login, .pagina-carrinho) .alert-error,
+html.pz :is(.pagina-login, .pagina-carrinho) .alert-danger { border-left-color: #a5483f; background: #f9efed !important; color: #6e2a24 !important; }
+/* "×" dos avisos: o tema antigo empurra o botão 21px para fora (contava com outra margem) e deixa com 20% de opacidade */
+html.pz .alert { position: relative; padding-right: 56px !important; font-family: var(--pz-sans); }
+html.pz .alert .close {
+  position: absolute !important; top: 50% !important; right: 10px !important; left: auto !important;
+  transform: translateY(-50%); float: none; width: 32px; height: 32px; margin: 0; padding: 0;
+  display: flex; align-items: center; justify-content: center;
+  border: 0; border-radius: 50%; background: transparent; cursor: pointer;
+  font: 300 24px/1 var(--pz-sans) !important; color: inherit !important; opacity: .6; text-shadow: none;
+  transition: opacity .15s var(--pz-ease), background-color .15s var(--pz-ease);
+}
+html.pz .alert .close:hover,
+html.pz .alert .close:focus-visible { opacity: 1; background: rgba(44, 84, 93, .08); }
+
+/* ---------- Login ---------- */
+html.pz .pagina-login .cadastro-logar { display: flex; gap: clamp(16px, 2vw, 28px); margin-top: 16px; }
+html.pz .pagina-login .cadastro-logar::before,
+html.pz .pagina-login .cadastro-logar::after { display: none; }
+html.pz .pagina-login .cadastro-logar > .span6 { float: none; width: auto; flex: 1; margin: 0; }
+html.pz .pagina-login .cadastro-logar .caixa-sombreada { height: 100%; }
+html.pz .pagina-login legend {
+  font: 400 24px/1.2 var(--pz-serif) !important; color: var(--pz-teal-deep) !important;
+  border: 0 !important; padding: 0 0 6px; margin: 0 0 20px; width: auto;
+}
+html.pz .pagina-login legend i { display: none; }
+html.pz .pagina-login .form-horizontal .control-label { float: none; width: auto; text-align: left; padding: 0; margin: 0 0 6px; }
+html.pz .pagina-login .form-horizontal .controls { margin-left: 0 !important; }
+html.pz .pagina-login .control-group { margin-bottom: 16px; }
+html.pz .pagina-login label { display: block; font: 500 14px/1.3 var(--pz-sans) !important; color: var(--pz-ink); margin-bottom: 6px; }
+html.pz .pagina-login .controls,
+html.pz .pagina-login fieldset > div:not(.control-group) { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+html.pz .pagina-login .cadastro input[type="text"],
+html.pz .pagina-login .cadastro input[type="password"],
+html.pz .pagina-login .cadastro input[type="email"] {
+  flex: 1 1 220px; width: auto !important; height: 48px; margin: 0; padding: 0 16px; box-sizing: border-box;
+  border: 1px solid var(--pz-line) !important; border-radius: var(--pz-r-md) !important; box-shadow: none !important;
+  font: 400 16px/1 var(--pz-sans) !important; color: var(--pz-ink); background: #fff;
+}
+html.pz .pagina-login .cadastro input:focus { border-color: var(--pz-teal) !important; box-shadow: 0 0 0 3px var(--pz-teal-soft) !important; outline: none; }
+html.pz .pagina-login .botao.principal { height: 48px; padding: 0 28px !important; margin: 0; font-size: 15px !important; line-height: 48px !important; }
+html.pz .pagina-login .recuperar-senha { display: inline-block; margin-top: 4px; font-size: 14px; color: var(--pz-muted) !important; text-decoration: underline; text-underline-offset: 3px; }
+html.pz .pagina-login .recuperar-senha i { display: none; }
+html.pz .pagina-login .recuperar-senha { margin-left: 0 !important; }
+html.pz .pagina-login .cadastro :is(input[type="text"], input[type="password"], input[type="email"]) { height: 48px !important; padding: 0 16px !important; }
+html.pz .pagina-login .cadastro .botao,
+html.pz .pagina-carrinho #corpo .botao,
+html.pz #modalRecuperarSenha .botao { border-radius: 999px !important; }
+html.pz .pagina-login .social-login-google { margin-top: 20px; }
+html.pz #modalRecuperarSenha { border-radius: var(--pz-r-lg); border: 0; box-shadow: 0 40px 80px -32px rgba(44, 84, 93,.6); overflow: hidden; }
+html.pz #modalRecuperarSenha .modal-header { border-bottom: 1px solid var(--pz-line); padding: 18px 24px; }
+html.pz #modalRecuperarSenha .titulo { font: 400 20px/1.3 var(--pz-serif) !important; color: var(--pz-teal-deep) !important; }
+html.pz #modalRecuperarSenha input { height: 44px; border-radius: var(--pz-r-md); border: 1px solid var(--pz-line); box-shadow: none; padding: 0 14px; box-sizing: border-box; }
+html.pz #modalRecuperarSenha .modal-footer { background: var(--pz-porcelain); border-top: 1px solid var(--pz-line); box-shadow: none; }
+html.pz #modalRecuperarSenha .botao:not(.principal) { background: #fff !important; border: 1px solid var(--pz-line) !important; border-radius: 999px; box-shadow: none; text-shadow: none; color: var(--pz-teal-deep) !important; }
+
+/* ---------- Carrinho ---------- */
+html.pz .pagina-carrinho .caixa-destaque { text-align: center; padding: clamp(48px, 8vw, 96px) 16px; }
+html.pz .pagina-carrinho .caixa-destaque h1 { font: 400 clamp(28px, 3vw, 40px)/1.2 var(--pz-serif) !important; color: var(--pz-teal-deep) !important; }
+html.pz .pagina-carrinho .caixa-destaque br { display: none; }
+html.pz .pagina-carrinho .caixa-destaque .botao { margin-top: 24px; height: 48px; line-height: 48px !important; padding: 0 32px !important; }
+html.pz .tabela-carrinho { border: 0 !important; margin: 0; }
+html.pz .tabela-carrinho th { border: 0 !important; border-bottom: 1px solid var(--pz-line) !important; padding: 0 12px 12px; background: none !important; }
+html.pz .tabela-carrinho th h6 { font: 500 13px/1 var(--pz-sans) !important; color: var(--pz-muted) !important; text-transform: none; letter-spacing: .02em; margin: 0; }
+html.pz .tabela-carrinho td { border-top: 1px solid var(--pz-line) !important; padding: 18px 12px; vertical-align: middle; }
+html.pz .tabela-carrinho tbody tr:first-child td { border-top: 0 !important; }
+html.pz .tabela-carrinho .imagem img { width: 96px; height: 96px; object-fit: contain; border: 1px solid var(--pz-line); border-radius: var(--pz-r-md); background: #fff; }
+html.pz .tabela-carrinho .produto-info > a { font: 400 20px/1.3 var(--pz-serif) !important; color: var(--pz-teal-deep) !important; }
+html.pz .tabela-carrinho .produto-info ul { margin: 8px 0 0; list-style: none; }
+html.pz .tabela-carrinho .produto-info li { font-size: 13px; color: var(--pz-muted); line-height: 1.6; }
+html.pz .tabela-carrinho .produto-info strong { color: var(--pz-ink); font-weight: 500; }
+html.pz .tabela-carrinho .atributo-cor-carrinho span { border-radius: 50%; border: 1px solid var(--pz-line); }
+html.pz .tabela-carrinho .quantidade { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+html.pz .tabela-carrinho .quantidade input.input-mini { width: 48px; height: 36px; margin: 0; padding: 0; box-sizing: border-box; }
+html.pz .tabela-carrinho .atualizar-quantidade {
+  flex-basis: 100%; height: auto; padding: 0 !important; margin: 4px 0 0; background: none !important; border: 0 !important; box-shadow: none !important;
+  color: var(--pz-teal-deep) !important; font: 500 13px/1.4 var(--pz-sans) !important; text-decoration: underline; text-underline-offset: 3px; text-align: left; width: auto;
+}
+html.pz .tabela-carrinho .preco-produto strong { font: 400 20px/1.2 var(--pz-serif) !important; color: var(--pz-teal-deep) !important; }
+html.pz .tabela-carrinho tr.bg-dark td { background: var(--pz-porcelain) !important; border-top-color: rgba(44, 84, 93,.08) !important; }
+html.pz .tabela-carrinho .control-label { font: 500 14px/1.3 var(--pz-sans); color: var(--pz-ink); }
+html.pz .tabela-carrinho .control-label b { font-weight: 500; }
+html.pz .tabela-carrinho .help-inline a { font-size: 13px; color: var(--pz-muted); text-decoration: underline; text-underline-offset: 3px; }
+html.pz .tabela-carrinho .help-inline i,
+html.pz .tabela-carrinho .btn i { display: none; }
+html.pz .tabela-carrinho .subtotal,
+html.pz .tabela-carrinho .total { font: 400 15px/1.4 var(--pz-sans); color: var(--pz-muted); text-align: right; }
+html.pz .tabela-carrinho .subtotal strong { font: 400 20px/1.2 var(--pz-serif) !important; color: var(--pz-teal-deep) !important; margin-left: 8px; }
+html.pz .tabela-carrinho .total strong { font: 400 30px/1.2 var(--pz-serif) !important; color: var(--pz-teal-deep) !important; margin-left: 10px; }
+html.pz .pagina-carrinho .acao-editar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-top: 24px; }
+html.pz .pagina-carrinho .acao-editar::before,
+html.pz .pagina-carrinho .acao-editar::after { display: none; }
+html.pz .pagina-carrinho .acao-editar .span12 { display: flex; justify-content: flex-end; align-items: center; gap: 12px; flex-wrap: wrap; width: auto; float: none; flex: 1; order: 2; }
+html.pz .pagina-carrinho .acao-editar .botao:not(.principal) {
+  background: #fff !important; border: 1px solid var(--pz-line) !important; border-radius: 999px; box-shadow: none !important; text-shadow: none !important;
+  color: var(--pz-teal-deep) !important; height: 52px; line-height: 50px !important; padding: 0 28px !important; box-sizing: border-box; font-weight: 500;
+}
+html.pz .pagina-carrinho .acao-editar .botao.principal { height: 52px; padding: 0 36px !important; font-size: 16px !important; }
+html.pz .pagina-carrinho .acao-editar .botao.principal i { display: none; }
+html.pz .pagina-carrinho .selo-ssl { order: 1; float: none; margin: 0; }
+html.pz .pagina-carrinho .selo-ssl img { height: 40px; width: auto; }
+@media (max-width: 767px) {
+  /* no celular o carrossel mostra 1 card sem espaço lateral: alinha com o título sem margem negativa */
+  html.pz .listagem ul.produtos-carrossel { margin-left: 0 !important; margin-right: 0 !important; }
+  html.pz .pagina-login .cadastro-logar { flex-direction: column; }
+  html.pz .pagina-carrinho .acao-editar .span12 { flex-direction: column-reverse; align-items: stretch; }
+  html.pz .pagina-carrinho .acao-editar .botao { width: 100%; text-align: center; }
+  html.pz #search-form > div { padding: 14px 16px; }
+  html.pz #search-form form input[type="text"] { height: 48px; font-size: 16px !important; padding: 0 60px 0 18px !important; }
+  html.pz #search-form form .botao-busca { width: 38px !important; height: 38px !important; right: 5px !important; }
+}
+
+html.pz :is(.modal-comprar-ajax-status, .tabela-carrinho) .input-append input { background: #fff !important; border: 1px solid rgba(44, 84, 93,.22) !important; border-right: 0 !important; }
+
+/* ---------- Rodapé ---------- */
+html.pz #rodape .institucional { background: var(--pz-teal-deep) !important; color: rgba(255,255,255,.92); padding: clamp(48px, 6vw, 80px) 0 40px; }
+html.pz #rodape .institucional,
+html.pz #rodape .institucional p,
+html.pz #rodape .institucional a,
+html.pz #rodape .institucional li { font-family: var(--pz-sans) !important; }
+html.pz #rodape .institucional ul li a,
+html.pz #rodape .institucional .g_atendimento a { color: rgba(255,255,255,.95) !important; font-size: 15px; }
+html.pz #rodape .institucional ul li a:hover { color: #fff !important; }
+html.pz #rodape .institucional i.fa,
+html.pz #rodape .institucional i.fa::before { color: var(--pz-gold) !important; }
+html.pz #rodape .institucional i.fa { margin-right: 8px; }
+/* o tema põe uma borda quase branca embaixo deste bloco em telas grandes (a linha entre os rodapés) */
+html.pz #rodape .institucional { border-bottom: 0 !important; }
+/* círculos das redes: a borda vermelha do tema fica no li */
+html.pz #rodape .sociais li { border: 1px solid rgba(255,255,255,.4) !important; background: transparent !important; transition: border-color .18s var(--pz-ease), background-color .18s var(--pz-ease); }
+html.pz #rodape .sociais li:hover { border-color: #fff !important; background: rgba(255,255,255,.08) !important; }
+html.pz #rodape .sociais a,
+html.pz #rodape .sociais i { border: 0 !important; background: transparent !important; }
+html.pz #rodape .institucional h5 { font: 400 20px/1.2 var(--pz-serif) !important; color: #fff; text-transform: none; letter-spacing: .01em; margin-bottom: 16px; }
+html.pz #rodape .institucional p { font-size: 15px; line-height: 1.7; color: rgba(255,255,255,.92); }
+html.pz #rodape .institucional a { color: rgba(255,255,255,.95); }
+html.pz #rodape .institucional a:hover { color: #fff; }
+html.pz #rodape .institucional ul li { margin-bottom: 8px; }
+html.pz #rodape .sociais svg, html.pz #rodape .sociais svg path { fill: #fff !important; }
+html.pz #rodape .pagamento-selos { background: var(--pz-teal-deep); border-top: 1px solid rgba(255,255,255,.12); padding: 16px 0; }
+html.pz #rodape .pagamento-selos .titulo { color: rgba(255,255,255,.9) !important; font: 500 13px/1 var(--pz-sans); }
+html.pz .pz-credito { background: var(--pz-teal-deep); color: rgba(255,255,255,.9); text-align: center; font-size: 13px; padding: 14px var(--pz-gutter); border-top: 1px solid rgba(255,255,255,.12); }
+html.pz .pz-credito p { margin: 0; white-space: normal; line-height: 1.8; overflow-wrap: anywhere; }
+html.pz .pz-credito { box-sizing: border-box; width: 100%; max-width: 100%; }
+html.pz #rodape .pz-credito { padding: 16px var(--pz-gutter) !important; text-align: center !important; }
+@media (max-width: 767px) {
+  /* espaço para o botão flutuante do WhatsApp não cobrir os links */
+  html.pz #rodape .pz-credito { padding-bottom: 88px !important; }
+}
+html.pz #rodape .pz-credito--claro { background: #fff !important; color: var(--pz-muted); border-top: 1px solid var(--pz-line); }
+html.pz #rodape .pz-credito--claro a { color: var(--pz-teal-deep); }
+html.pz .pz-credito a { color: #fff; text-decoration: underline; text-underline-offset: 3px; margin-left: 6px; }
+html.pz .pz-credito a:first-child { margin-left: 0; }
+
+/* ---------- Celular e tablet ---------- */
+@media (max-width: 991px) {
+  html.pz .pz-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  html.pz .pz-hero { grid-template-columns: minmax(0, 1fr); min-height: 0; }
+  html.pz .pz-hero__media { order: -1; padding: 28px var(--pz-gutter); }
+  html.pz .pz-hero__media img { max-width: 100%; max-height: min(72vw, 460px); }
+  html.pz .pz-hero__text { padding: 40px var(--pz-gutter) 48px; }
+  html.pz .pz-smoke { top: 24px; right: var(--pz-gutter); width: 48px; }
+  html.pz .pz-olfativa__inner { grid-template-columns: 1fr; align-items: start; }
+}
+@media (max-width: 767px) {
+  html.pz .pz-header > .container { min-height: 64px; }
+  html.pz .pz-header .logo img { height: 44px; }
+  html.pz .menu.superior .nivel-um > li { border-bottom: 1px solid var(--pz-line); }
+  html.pz .menu.superior .nivel-um > li > a { padding: 18px 0; }
+  html.pz .menu.superior .nivel-um > li > a .titulo { font: 400 22px/1.2 var(--pz-serif) !important; color: var(--pz-teal-deep) !important; }
+  html.pz .menu.superior .nivel-dois { border: 0 !important; box-shadow: none; padding: 0 0 12px; background: transparent; }
+  html.pz .menu.superior .nivel-dois a { padding: 8px 0; }
+  html.pz .pz-hero__title { max-width: none; padding-right: 56px; box-sizing: border-box; }
+  html.pz .pz-hero__actions .pz-btn { flex: 1 1 100%; }
+  html.pz .pz-hero__media figcaption { display: none; }
+  html.pz .pz-olfativa { margin-left: calc(var(--pz-gutter) * -1); margin-right: calc(var(--pz-gutter) * -1); border-radius: 0; }
+  html.pz .pz-section-head { flex-wrap: wrap; }
+  html.pz .listagem .acoes-produto { position: static !important; width: 100%; margin: 10px 0 0; padding: 0; text-align: left; }
+  html.pz .listagem .acoes-produto .botao-comprar { display: flex; width: 100%; height: 44px; margin: 0; border-radius: 999px !important; box-sizing: border-box; }
+  html.pz .listagem .acoes-produto .botao-comprar::after { content: 'Comprar' !important; display: block !important; position: static; font: 500 14px/1 var(--pz-sans); color: #fff; letter-spacing: .02em; background: none; width: auto; height: auto; }
+  html.pz .listagem .acoes-produto .botao-comprar .svg-ico { display: none; }
+  html.pz .listagem .preco-promocional, html.pz .listagem .preco-produto strong { font-size: 17px !important; }
+  html.pz .listagem .preco-venda { display: block; }
+}
+
+/* ---------- Movimento reduzido ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html.pz *, html.pz *::before, html.pz *::after { animation: none !important; transition: none !important; }
+  html.pz .pz-smoke path { stroke-dasharray: none; stroke-dashoffset: 0; }
+  html.pz .pz-reveal { opacity: 1; transform: none; }
+}
+
+/* ---------- Filtro de preço (categoria e busca): item em pílula; o selecionado fica preenchido e mostra "×" para desmarcar ---------- */
+html.pz .filtro.lista ul { margin: 0 !important; }
+html.pz .filtro.lista ul li { margin: 0 0 4px !important; padding: 0 !important; border: 0 !important; }
+html.pz .filtro.lista ul li a { display: block; text-decoration: none !important; }
+html.pz .filtro.lista ul li label {
+  display: flex !important; align-items: center; gap: 8px; min-height: 40px; margin: 0 !important; padding: 8px 12px !important; box-sizing: border-box;
+  border: 1px solid transparent !important; border-radius: var(--pz-r-md) !important; background: transparent;
+  font: 500 14px/1.3 var(--pz-sans) !important; color: var(--pz-ink) !important; cursor: pointer;
+  transition: background-color .15s var(--pz-ease), border-color .15s var(--pz-ease), color .15s var(--pz-ease);
+}
+html.pz .filtro.lista ul li label small { margin-left: auto; font: 500 12px/1 var(--pz-sans) !important; color: var(--pz-muted); }
+html.pz .filtro.lista ul li label:hover { background: #fff !important; border-color: var(--pz-line) !important; color: var(--pz-teal-deep) !important; }
+html.pz .filtro.lista ul li.active label,
+html.pz .filtro.lista ul li.active label:hover { background: var(--pz-teal-deep) !important; border-color: var(--pz-teal-deep) !important; color: #fff !important; }
+html.pz .filtro.lista ul li.active label small { color: rgba(255, 255, 255, .8); }
+html.pz .filtro.lista ul li.active label::after { content: '×'; margin-left: 4px; font: 400 18px/1 var(--pz-sans); }
+
+/* ---------- Foto do produto: sem lupa no hover; o clique abre a galeria ampliada ---------- */
+html.pz .zm-viewer,
+html.pz .zm-handler { display: none !important; }
+html.pz .pagina-produto .conteiner-imagem img#imagemProduto { cursor: zoom-in; }
+/* galeria ampliada (fancybox da plataforma) */
+html.pz .fancybox-skin { border-radius: var(--pz-r-lg) !important; }
+html.pz .fancybox-nav span { border-radius: 50%; }
+
+/* ---------- Cadastro e área do cliente (Minha conta, pedidos, endereços, favoritos) ----------
+   Só aparência: os formulários, os campos e o que eles enviam continuam os da plataforma.
+   html.pz-conta vem do bloco do <head> em /conta/*; o login tem regras próprias acima. */
+html.pz .pagina-cadastro .cadastro { max-width: 1040px; margin: 0 auto clamp(48px, 6vw, 88px); }
+html.pz .pagina-cadastro .formulario-cadastro-cliente > .row-fluid { margin-top: 20px; }
+html.pz .pagina-cadastro .dados-acesso { background: none !important; }
+html.pz .pagina-cadastro .dados-acesso br { display: none; }
+html.pz .pagina-cadastro .dados-acesso .row-fluid ~ .row-fluid { margin-top: 20px; }
+html.pz .pagina-cadastro .dados-pessoais { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+html.pz .pagina-cadastro .dados-pessoais::before,
+html.pz .pagina-cadastro .dados-pessoais::after { display: none; }
+html.pz .pagina-cadastro .dados-pessoais > .span6 { width: auto !important; float: none !important; margin: 0 !important; }
+html.pz .pagina-cadastro .dados-pessoais .caixa-sombreada { height: 100%; margin: 0 !important; }
+@media (max-width: 767px) { html.pz .pagina-cadastro .dados-pessoais { grid-template-columns: minmax(0, 1fr); } }
+
+html.pz.pz-conta body:not(.pagina-login) .caixa-sombreada {
+  background: var(--pz-paper) !important; border: 1px solid var(--pz-line) !important; border-radius: var(--pz-r-lg) !important;
+  box-shadow: none !important; padding: clamp(20px, 3vw, 32px) !important; box-sizing: border-box;
+}
+html.pz.pz-conta body:not(.pagina-login) legend {
+  width: auto; margin: 0 0 20px !important; padding: 0 !important; border: 0 !important;
+  font: 400 22px/1.25 var(--pz-serif) !important; color: var(--pz-teal-deep) !important;
+}
+html.pz.pz-conta body:not(.pagina-login) legend i,
+html.pz.pz-conta body:not(.pagina-login) .control-label i { display: none !important; }
+/* rótulo em cima do campo (o tema alinhava à direita, numa coluna de 160px) */
+html.pz.pz-conta body:not(.pagina-login) .control-group { margin: 0 0 16px !important; }
+html.pz.pz-conta body:not(.pagina-login) .form-horizontal .control-label,
+html.pz.pz-conta body:not(.pagina-login) .control-group > label {
+  float: none !important; display: block; width: auto !important; margin: 0 0 6px !important; padding: 0 !important; text-align: left !important;
+  font: 500 14px/1.3 var(--pz-sans) !important; color: var(--pz-ink) !important;
+}
+html.pz.pz-conta body:not(.pagina-login) .form-horizontal .controls { margin-left: 0 !important; }
+html.pz.pz-conta body:not(.pagina-login) #corpo :is(input[type="text"], input[type="tel"], input[type="email"], input[type="password"], input[type="number"], input:not([type]), select, textarea) {
+  width: 100% !important; max-width: 100%; height: 48px; margin: 0 !important; padding: 0 14px !important; box-sizing: border-box;
+  border: 1px solid var(--pz-line) !important; border-radius: var(--pz-r-md) !important; background-color: #fff !important; box-shadow: none !important;
+  font: 400 16px/1.2 var(--pz-sans) !important; color: var(--pz-ink) !important;
+}
+html.pz.pz-conta body:not(.pagina-login) #corpo textarea { height: auto; min-height: 120px; padding: 12px 14px !important; }
+html.pz.pz-conta body:not(.pagina-login) #corpo select {
+  -webkit-appearance: none; appearance: none; padding-right: 40px !important;
+  background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23386a75' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") right 14px center / 16px no-repeat !important;
+}
+html.pz.pz-conta body:not(.pagina-login) #corpo :is(input, select, textarea):focus { border-color: var(--pz-teal) !important; box-shadow: 0 0 0 3px var(--pz-teal-soft) !important; outline: none; }
+html.pz .pagina-cadastro #id_cep { width: min(100%, 200px) !important; }
+html.pz .pagina-cadastro .help-inline { display: inline-flex; align-items: center; min-height: 44px; margin-left: 12px; padding: 0; vertical-align: middle; }
+html.pz .pagina-cadastro .help-inline a { font-size: 14px; color: var(--pz-teal-deep) !important; text-decoration: underline; text-underline-offset: 3px; }
+html.pz .pagina-cadastro .help-inline i { display: none; }
+/* campo com erro: continua vermelho, de propósito (é o aviso da plataforma) */
+html.pz.pz-conta body:not(.pagina-login) #corpo .control-group.error :is(input, select, textarea) { border-color: #a5483f !important; box-shadow: 0 0 0 3px #f6e3e0 !important; }
+html.pz.pz-conta body:not(.pagina-login) .control-group.error .control-label,
+html.pz.pz-conta body:not(.pagina-login) .control-group.error > label,
+html.pz.pz-conta body:not(.pagina-login) .control-group.error .help-inline { color: #8f3a32 !important; }
+
+/* tipo de cadastro: as duas opções viram pílulas, a marcada fica destacada */
+html.pz .pagina-cadastro #id_tipo { display: flex; flex-wrap: wrap; gap: 12px; margin: 0; padding: 0; list-style: none; }
+html.pz .pagina-cadastro #id_tipo li { margin: 0; }
+html.pz .pagina-cadastro #id_tipo label {
+  display: inline-flex !important; align-items: center; gap: 10px; min-height: 44px; margin: 0 !important; padding: 0 20px 0 16px !important;
+  border: 1px solid var(--pz-line); border-radius: 999px; background: #fff; cursor: pointer;
+  font: 500 15px/1 var(--pz-sans) !important; color: var(--pz-ink) !important;
+  transition: border-color .15s var(--pz-ease), background-color .15s var(--pz-ease);
+}
+html.pz .pagina-cadastro #id_tipo label:hover { border-color: var(--pz-teal-deep); }
+html.pz .pagina-cadastro #id_tipo label:has(input:checked) { border-color: var(--pz-teal-deep); background: var(--pz-teal-soft); }
+html.pz .pagina-cadastro #id_tipo input[type="radio"] { width: 18px; height: 18px; margin: 0 !important; accent-color: var(--pz-teal-deep); }
+
+/* botões do fim do formulário: Cancelar em contorno, Criar conta preenchido, alinhados à direita */
+html.pz.pz-conta body:not(.pagina-login) .acao-editar { margin-top: 24px; }
+html.pz.pz-conta body:not(.pagina-login) .acao-editar > [class*="span"] {
+  display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 12px;
+  width: 100% !important; float: none !important; margin: 0 !important;
+}
+html.pz.pz-conta body:not(.pagina-login) #corpo .botao {
+  display: inline-flex !important; align-items: center; justify-content: center; width: auto !important; min-width: 0 !important; height: 48px; margin: 0 !important; padding: 0 28px !important;
+  border-radius: 999px !important; box-shadow: none !important; text-shadow: none !important; font: 600 15px/1 var(--pz-sans) !important; float: none !important;
+}
+html.pz.pz-conta body:not(.pagina-login) #corpo .botao:not(.principal) {
+  background: #fff !important; border: 1px solid var(--pz-teal-deep) !important; color: var(--pz-teal-deep) !important;
+}
+html.pz.pz-conta body:not(.pagina-login) #corpo .botao:not(.principal):hover { background: var(--pz-teal-soft) !important; }
+@media (max-width: 767px) {
+  html.pz.pz-conta body:not(.pagina-login) .acao-editar > [class*="span"] { flex-direction: column-reverse; align-items: stretch; }
+  html.pz .pagina-cadastro .help-inline { margin: 8px 0 0; display: flex; }
+}
+
+/* avisos (sucesso, erro) no mesmo desenho do login */
+html.pz.pz-conta body .alert {
+  border: 0; border-left: 3px solid var(--pz-gold); border-radius: var(--pz-r-sm);
+  background: var(--pz-porcelain) !important; color: var(--pz-ink) !important; text-shadow: none; font-size: 15px; padding: 14px 56px 14px 18px !important;
+}
+html.pz.pz-conta body :is(.alert-error, .alert-danger) { border-left-color: #a5483f; background: #f9efed !important; color: #6e2a24 !important; }
+html.pz.pz-conta body .alert-success { border-left-color: var(--pz-teal-deep); }
+
+/* Minha conta: menu lateral, abas, tabelas de pedidos e favoritos */
+html.pz.pz-conta .conta-menu { background: var(--pz-porcelain); border-radius: var(--pz-r-lg); padding: 16px; box-sizing: border-box; }
+html.pz.pz-conta .conta-menu .titulo { margin: 0 0 8px !important; padding: 0 8px 12px !important; border-color: var(--pz-line) !important; font: 400 20px/1.25 var(--pz-serif) !important; color: var(--pz-teal-deep) !important; }
+html.pz.pz-conta .conta-menu .menu-simples { margin: 0 !important; padding: 0 !important; list-style: none; }
+html.pz.pz-conta .conta-menu .menu-simples li { margin: 0 0 2px; border: 0 !important; }
+html.pz.pz-conta .conta-menu .menu-simples li a {
+  display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 12px !important; border-radius: var(--pz-r-md);
+  font: 500 15px/1.2 var(--pz-sans) !important; color: var(--pz-ink) !important; text-decoration: none;
+}
+html.pz.pz-conta .conta-menu .menu-simples li a:hover { background: #fff !important; color: var(--pz-teal-deep) !important; }
+html.pz.pz-conta .conta-menu .menu-simples li.active a { background: var(--pz-teal-deep) !important; color: #fff !important; }
+html.pz.pz-conta .conta-menu i { color: inherit !important; }
+html.pz.pz-conta .abas-conta,
+html.pz.pz-conta .nav-tabs { display: flex; flex-wrap: wrap; gap: 8px; border: 0 !important; margin-bottom: 20px; }
+html.pz.pz-conta .nav-tabs > li { float: none; margin: 0 !important; }
+html.pz.pz-conta .nav-tabs > li > a {
+  display: inline-flex; align-items: center; min-height: 40px; margin: 0 !important; padding: 0 16px !important;
+  border: 1px solid var(--pz-line) !important; border-radius: 999px !important; background: #fff !important;
+  font: 500 14px/1 var(--pz-sans) !important; color: var(--pz-ink) !important;
+}
+html.pz.pz-conta .nav-tabs > li.active > a { background: var(--pz-teal-deep) !important; border-color: var(--pz-teal-deep) !important; color: #fff !important; }
+html.pz.pz-conta #corpo table {
+  width: 100%; border-collapse: separate !important; border-spacing: 0; overflow: hidden;
+  border: 1px solid var(--pz-line) !important; border-radius: var(--pz-r-lg); background: #fff;
+}
+html.pz.pz-conta #corpo table :is(th, td) { padding: 14px 16px !important; border: 0 !important; border-top: 1px solid var(--pz-line) !important; vertical-align: middle; font: 400 15px/1.4 var(--pz-sans) !important; color: var(--pz-ink); background: transparent !important; }
+html.pz.pz-conta #corpo table thead :is(th, td),
+html.pz.pz-conta #corpo table tr:first-child > th { border-top: 0 !important; background: var(--pz-porcelain) !important; font: 600 13px/1.3 var(--pz-sans) !important; color: var(--pz-teal-deep) !important; letter-spacing: .02em; }
+html.pz.pz-conta #corpo table tbody tr:first-child > td { border-top-color: var(--pz-line) !important; }
+html.pz.pz-conta #corpo table tbody tr:hover > td { background: #fafcfc !important; }
+html.pz.pz-conta #corpo table a { color: var(--pz-teal-deep) !important; font-weight: 600; }
+html.pz.pz-conta #corpo .label,
+html.pz.pz-conta #corpo .badge { display: inline-block; padding: 5px 10px; border-radius: 999px; font: 600 12px/1 var(--pz-sans) !important; text-shadow: none; }
+@media (max-width: 767px) {
+  /* tabelas largas rolam de lado dentro do cartão, sem empurrar a página */
+  html.pz.pz-conta #corpo table { display: block; overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; }
+}
+
+/* ---------- Ajustes da auditoria (rodada 5) ---------- */
+/* carrinho do card: o tema dá 20px de margem nos dois lados do botão; sem ela, o recuo da borda fica igual ao do selo (10px) */
+html.pz .listagem .acoes-produto .botao-comprar { margin: 0 !important; }
+/* filtros: a lista do tema rola dentro de uma caixa de 163px e cortava a última faixa de preço */
+html.pz .filtro.lista .beautyScroll { max-height: none !important; height: auto !important; overflow: visible !important; }
+/* "Limpar" do filtro: fonte da marca e área de toque maior */
+html.pz .filtro .limpar {
+  display: inline-flex !important; align-items: center; gap: 4px; min-height: 36px; padding: 0 10px !important; margin-right: 0;
+  border-radius: 999px; font: 600 13px/1 var(--pz-sans) !important; color: var(--pz-teal-deep) !important; text-decoration: none !important;
+}
+html.pz .filtro .limpar:hover { background: #fff; }
+/* ordenar no tablet: título e pílula dividem a linha sem a pílula vazar da tela */
+@media (min-width: 768px) {
+  html.pz .ordenar-listagem > .row-fluid { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; }
+  html.pz .ordenar-listagem > .row-fluid::before,
+  html.pz .ordenar-listagem > .row-fluid::after { display: none; }
+  html.pz .ordenar-listagem > .row-fluid > .span9 { flex: 1 1 auto; width: auto !important; min-width: 0; margin: 0 !important; float: none !important; }
+  html.pz .ordenar-listagem > .row-fluid > .span3 { flex: 0 0 auto; width: auto !important; margin: 0 !important; float: none !important; }
+  html.pz .ordenar-listagem > .row-fluid > :is(.filtro-mobile, .filtro-mobile-itens) { flex: 1 0 100%; }
+}
+/* janelas (Fale conosco e outras): fonte da marca no texto solto do cabeçalho */
+html.pz .modal,
+html.pz .modal-header,
+html.pz .modal-body,
+html.pz .modal-footer { font-family: var(--pz-sans); }
+html.pz .modal-header h3,
+html.pz .modal-header .titulo { font-family: var(--pz-serif) !important; font-weight: 400; color: var(--pz-teal-deep); }
+/* cadastro na mesma margem do resto do site (sem coluna estreita centralizada) */
+html.pz .pagina-cadastro .cadastro { max-width: none; }
+html.pz .pagina-cadastro .help-inline a { display: inline-flex; align-items: center; min-height: 44px; }
+/* CEP: o tema afasta o botão 15px do campo; campo e botão formam uma pílula só */
+html.pz #corpo .principal .cep .input-append .btn { margin-left: 0 !important; }
+/* carrossel: o tema põe sombra e fundo branco em cada item (moldura dupla em volta da moldura da foto) */
+html.pz .listagem .flexslider .flex-viewport > ul > li { box-shadow: none !important; background: transparent !important; border-radius: 0 !important; }
+/* filtro: texto quebra em linhas equilibradas ("de R$ 25,00 / até R$ 49,99"), sem sobrar um número sozinho */
+html.pz .filtro.lista ul li label { padding: 8px 10px !important; gap: 6px; text-wrap: balance; }
+/* cadastro: todos os campos com a mesma altura (o tema fixa 36px nos campos "small/medium") */
+html.pz.pz-conta body:not(.pagina-login) #corpo :is(input[type="text"], input[type="tel"], input[type="email"], input[type="password"], input[type="number"], input:not([type]), select) { height: 48px !important; min-height: 48px; }
+/* dados para acesso: duas colunas com espaço entre elas (a margem do .span6 tinha sido zerada) */
+html.pz .pagina-cadastro .dados-acesso .row-fluid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 20px; }
+html.pz .pagina-cadastro .dados-acesso .row-fluid::before,
+html.pz .pagina-cadastro .dados-acesso .row-fluid::after { display: none; }
+html.pz .pagina-cadastro .dados-acesso .row-fluid > .control-group { width: auto !important; float: none !important; margin: 0 !important; }
+html.pz .pagina-cadastro .dados-acesso .row-fluid ~ .row-fluid { margin-top: 20px; }
+@media (max-width: 767px) {
+  html.pz .pagina-cadastro .dados-acesso .row-fluid { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+}
+/* CEP curto com o "Não sei meu cep" ao lado */
+html.pz.pz-conta body #corpo #id_cep { width: min(100%, 220px) !important; display: inline-block; vertical-align: middle; }
+/* celular: os filtros ficam só no botão "Filtrar" (o tema esconde a coluna; a regra de tablet acima a reexibia) */
+@media (max-width: 767px) {
+  html.pz :is(.pagina-categoria, .pagina-busca) .secao-principal > .coluna { display: none !important; }
+  /* Ordenar e Filtrar lado a lado, alinhados à margem (o tema centralizava os dois) */
+  html.pz .ordenar-listagem .span3.clearfix { display: flex !important; flex-wrap: wrap; align-items: center; gap: 8px; text-align: left !important; margin-top: 12px !important; }
+  html.pz .ordenar-listagem .span3.clearfix::before,
+  html.pz .ordenar-listagem .span3.clearfix::after { display: none; }
+  html.pz .ordenar-listagem .span3.clearfix > div { margin: 0 !important; }
+  html.pz .ordenar-listagem .span3.clearfix > div.filtro-mobile-itens { flex: 1 0 100%; }
+  html.pz .filtro-mobile .btn { height: 44px; }
+}
+/* grade de produtos no celular: o tema também põe sombra e fundo branco em cada item */
+html.pz .listagem .listagem-linha:not(.flexslider) > ul > li { box-shadow: none !important; background: transparent !important; border-radius: 0 !important; }
+
+/* ---------- Produto indisponível: bloco do "Avise-me" ----------
+   O tema embrulha o botão numa caixa cinza com sombra. Aqui o card fica igual aos outros:
+   uma linha de status no lugar do preço e o botão no mesmo lugar e tamanho do "Comprar", em contorno. */
+html.pz .listagem .produto-avise { margin-top: 8px !important; box-shadow: none !important; background: none !important; border: 0 !important; padding: 0 !important; }
+html.pz .listagem .produto-avise .avise-me-list { padding: 0 !important; background: none !important; border: 0 !important; box-shadow: none !important; }
+html.pz .listagem .produto-avise .avise-me-list::before {
+  content: 'Esgotado no momento'; display: block; min-height: 46px; /* mesma altura reservada ao preço */
+  font: 500 14px/1.4 var(--pz-sans); color: var(--pz-muted);
+}
+html.pz .listagem .produto-avise .avise-me-list-btn {
+  display: flex !important; align-items: center; justify-content: center; gap: 8px;
+  width: 100% !important; height: 44px; min-height: 44px; margin: 10px 0 0 !important; padding: 0 16px !important; box-sizing: border-box;
+  border: 1px solid var(--pz-teal-deep) !important; border-radius: 999px !important; background: #fff !important; box-shadow: none !important; text-shadow: none !important;
+  font: 500 15px/1 var(--pz-sans) !important; color: var(--pz-teal-deep) !important;
+  transition: background-color .18s var(--pz-ease), color .18s var(--pz-ease);
+}
+/* sininho antes do texto, na cor do texto */
+html.pz .listagem .produto-avise .avise-me-list-btn::before {
+  content: ''; flex: none; width: 16px; height: 16px; background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9'/%3E%3Cpath d='M10.3 21a1.94 1.94 0 0 0 3.4 0'/%3E%3C/svg%3E") center / contain no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9'/%3E%3Cpath d='M10.3 21a1.94 1.94 0 0 0 3.4 0'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+html.pz .listagem .produto-avise .avise-me-list-btn:hover,
+html.pz .listagem .produto-avise .avise-me-list-btn:focus-visible { background: var(--pz-teal-deep) !important; color: #fff !important; }
+/* no computador o "Comprar" dos outros cards é o círculo sobre a foto; aqui o botão fica logo abaixo do status */
+@media (min-width: 768px) {
+  html.pz .listagem .produto-avise .avise-me-list::before { min-height: 0; }
+}
+/* bloco de texto do card com a largura exata do card (o tema somava 2px de margem + o padding por fora) */
+html.pz .listagem .listagem-item .info-produto { box-sizing: border-box; width: 100% !important; margin-left: 0 !important; margin-right: 0 !important; }
+/* o botão encosta nas bordas do card, como o "Comprar" (o texto tem 4px de respiro lateral) */
+html.pz .listagem .produto-avise .avise-me-list-btn { width: calc(100% + 8px) !important; margin: 10px -4px 0 !important; }
+/* botões do card ACIMA do link que cobre o card inteiro (.produto-sobrepor, z-index 10 do tema):
+   sem isso, tocar em "Comprar" ou "Avise-me" abria a página do produto */
+html.pz .listagem .listagem-item .acoes-produto { z-index: 15 !important; }
+html.pz .listagem .listagem-item .produto-avise { position: relative !important; z-index: 20 !important; }
+@media (max-width: 767px) {
+  html.pz .listagem .listagem-item .acoes-produto { position: relative !important; }
+}
+/* status do card alinhado à esquerda, como o nome (o tema centraliza o bloco) */
+html.pz .listagem .produto-avise .avise-me-list { text-align: left !important; }
+
+/* ---------- Janela do "Avise-me" (abre ao clicar no botão do card) ----------
+   Mesmo desenho da janela de newsletter: filete dourado, título serifado, campos e botão do site.
+   O formulário e o que ele envia continuam os da plataforma. */
+html.pz .modal-avise-me-cadastro .fancybox-skin {
+  background: var(--pz-paper) !important; border-radius: var(--pz-r-lg) !important; padding: 0 !important;
+  box-shadow: 0 40px 80px -32px rgba(44, 84, 93, .6) !important; border-top: 3px solid var(--pz-gold);
+}
+html.pz .modal-avise-me-cadastro .fancybox-inner { height: auto !important; overflow: visible !important; }
+html.pz .modal-avise-me-cadastro .avise-me-form { margin: 0; padding: 32px 28px 28px; text-align: left; font-family: var(--pz-sans); }
+html.pz .modal-avise-me-cadastro .avise-tit { display: block; margin: 0 40px 8px 0; font: 400 28px/1.15 var(--pz-serif) !important; color: var(--pz-teal-deep) !important; text-align: left; }
+html.pz .modal-avise-me-cadastro .avise-descr { display: block; margin: 0 0 20px; font: 400 15px/1.55 var(--pz-sans) !important; color: var(--pz-muted) !important; text-align: left; }
+html.pz .modal-avise-me-cadastro .avise-descr br { display: none; }
+html.pz .modal-avise-me-cadastro .controls-row { display: grid; gap: 12px; margin: 0 !important; }
+html.pz .modal-avise-me-cadastro .controls-row::before,
+html.pz .modal-avise-me-cadastro .controls-row::after { display: none; }
+html.pz .modal-avise-me-cadastro .controls-row > * { width: auto !important; float: none !important; margin: 0 !important; display: block; }
+html.pz .modal-avise-me-cadastro .avise-icon { display: none !important; }
+html.pz .modal-avise-me-cadastro :is(.avise-nome, .avise-email) {
+  width: 100% !important; height: 48px !important; margin: 0 !important; padding: 0 16px !important; box-sizing: border-box;
+  border: 1px solid var(--pz-line) !important; border-radius: var(--pz-r-md) !important; background: #fff !important; box-shadow: none !important;
+  font: 400 16px/1.2 var(--pz-sans) !important; color: var(--pz-ink) !important;
+}
+html.pz .modal-avise-me-cadastro :is(.avise-nome, .avise-email):focus { border-color: var(--pz-teal) !important; box-shadow: 0 0 0 3px var(--pz-teal-soft) !important; outline: none; }
+html.pz .modal-avise-me-cadastro .avise-btn { margin-top: 16px; }
+html.pz .modal-avise-me-cadastro .avise-btn .botao {
+  display: block; width: 100%; height: 48px; margin: 0; padding: 0 24px !important;
+  border: 0 !important; border-radius: 999px !important; background: var(--pz-teal-deep) !important; box-shadow: none !important; text-shadow: none !important;
+  font: 600 15px/48px var(--pz-sans) !important; color: #fff !important; cursor: pointer; transition: background-color .18s var(--pz-ease);
+}
+html.pz .modal-avise-me-cadastro .avise-btn .botao:hover { background: var(--pz-teal) !important; }
+/* "×" das duas janelas: mesmo desenho e área de toque de 44px */
+html.pz :is(.modal-avise-me-cadastro, .modal-modalNewsletter) .fancybox-close {
+  top: 8px !important; right: 8px !important; width: 44px !important; height: 44px !important; border-radius: 50%; background: none !important;
+}
+html.pz .modal-avise-me-cadastro .fancybox-close::before {
+  content: '×'; display: block; font: 300 30px/44px var(--pz-sans); color: var(--pz-teal-deep); text-align: center;
+}
+html.pz .modal-modalNewsletter .fancybox-close::before { line-height: 44px; }
+html.pz :is(.modal-avise-me-cadastro, .modal-modalNewsletter) .fancybox-close:hover { background: var(--pz-porcelain) !important; }
+/* celular: "Comprar" e "Avise-me" presos ao pé do card, na mesma linha dos vizinhos
+   (o preço muda de altura: com ou sem preço riscado) */
+@media (max-width: 767px) {
+  html.pz .listagem .listagem-linha:not(.flexslider) .listagem-item { display: flex !important; flex-direction: column; }
+  html.pz .listagem .listagem-linha:not(.flexslider) .listagem-item > .imagem-produto { flex: none; }
+  html.pz .listagem .listagem-linha:not(.flexslider) .listagem-item > .info-produto { flex: 1 1 auto; display: flex; flex-direction: column; }
+  html.pz .listagem .listagem-linha:not(.flexslider) .listagem-item > .acoes-produto { height: auto !important; margin-top: 10px !important; }
+  html.pz .listagem .listagem-linha:not(.flexslider) .info-produto > .produto-avise,
+  html.pz .listagem .listagem-linha:not(.flexslider) .produto-avise > .avise-me-list { flex: 1 1 auto; display: flex !important; flex-direction: column; }
+  html.pz .listagem .listagem-linha:not(.flexslider) .produto-avise .avise-me-list-btn { margin-top: auto !important; }
+  html.pz .listagem .listagem-linha:not(.flexslider) .produto-avise .avise-me-list::before { margin-bottom: 10px; }
+}
+@media (max-width: 767px) {
+  /* com posição relativa (para ficar acima do link do card), o deslocamento do círculo do computador não vale aqui */
+  html.pz .listagem .listagem-item .acoes-produto { top: auto !important; right: auto !important; bottom: auto !important; left: auto !important; }
+}
+@media (max-width: 767px) {
+  /* a margem de 8px do tema abaixo do texto deixava o "Avise-me" (dentro do texto) 8px acima do "Comprar" (depois dele) */
+  html.pz .listagem .listagem-linha:not(.flexslider) .listagem-item > .info-produto { margin-bottom: 0 !important; }
+}
+
+/* ---------- Área do cliente logado (Minha conta, pedidos, desejos, cartões, senha, endereços) ----------
+   Conferido com login de teste em 07/10/2026. O tema escondia o menu da conta (Cartões, Senha, Sair)
+   e deixava o conteúdo em 3/4 da largura. Aqui: menu à esquerda no computador, em pílulas no celular,
+   e as abas (que repetem parte do menu) saem. Só aparência: links, formulários e dados são os da plataforma. */
+html.pz.pz-conta #corpo .secao-principal:has(.conta-menu) > .coluna { display: block !important; }
+html.pz.pz-conta #corpo .secao-principal:has(.conta-menu) .abas-conta { display: none !important; }
+@media (min-width: 992px) {
+  html.pz.pz-conta #corpo .secao-principal:has(.conta-menu) { display: grid !important; grid-template-columns: 264px minmax(0, 1fr); gap: 32px; align-items: start; }
+  html.pz.pz-conta #corpo .secao-principal:has(.conta-menu)::before,
+  html.pz.pz-conta #corpo .secao-principal:has(.conta-menu)::after { display: none; }
+  html.pz.pz-conta #corpo .secao-principal:has(.conta-menu) > * { width: auto !important; margin: 0 !important; float: none !important; }
+  html.pz.pz-conta #corpo .secao-principal:has(.conta-menu) > .coluna { position: sticky; top: 100px; }
+}
+@media (max-width: 991px) {
+  html.pz.pz-conta #corpo .secao-principal:has(.conta-menu) > * { width: 100% !important; margin-left: 0 !important; float: none !important; }
+  html.pz.pz-conta #corpo .secao-principal:has(.conta-menu) > .coluna { margin-bottom: 20px !important; }
+  /* menu vira uma fileira de pílulas que rola de lado */
+  html.pz.pz-conta .conta-menu { padding: 0 !important; background: none !important; border: 0 !important; }
+  html.pz.pz-conta .conta-menu .nome-usuario { display: none !important; }
+  html.pz.pz-conta .conta-menu .menu-simples { display: flex !important; gap: 8px; overflow-x: auto; scrollbar-width: none; padding-bottom: 4px !important; }
+  html.pz.pz-conta .conta-menu .menu-simples::-webkit-scrollbar { display: none; }
+  html.pz.pz-conta .conta-menu .menu-simples li { flex: none; margin: 0 !important; }
+  html.pz.pz-conta .conta-menu .menu-simples li.divisor { display: none; }
+  html.pz.pz-conta .conta-menu .menu-simples li a { border: 1px solid var(--pz-line); border-radius: 999px !important; background: #fff; white-space: nowrap; padding: 0 16px !important; }
+}
+/* menu: nome do cliente no topo, itens com ícone, item atual preenchido, "Sair" separado */
+html.pz.pz-conta .conta-menu { border: 1px solid var(--pz-line) !important; background: var(--pz-porcelain) !important; box-shadow: none !important; }
+html.pz.pz-conta .conta-menu .nome-usuario { display: flex !important; align-items: center; gap: 8px; overflow: hidden; text-overflow: ellipsis; }
+html.pz.pz-conta .conta-menu .nome-usuario i { color: var(--pz-gold-ink) !important; }
+html.pz.pz-conta .conta-menu .menu-simples li.divisor { height: 1px; margin: 8px 4px !important; padding: 0 !important; background: var(--pz-line); border: 0 !important; }
+html.pz.pz-conta .conta-menu .menu-simples li a i { width: 18px; text-align: center; color: var(--pz-teal-deep) !important; }
+html.pz.pz-conta .conta-menu .menu-simples li a:hover i { color: inherit !important; }
+html.pz.pz-conta .conta-menu .menu-simples li a[href$="/conta/logout"] { color: var(--pz-muted) !important; }
+
+/* conteúdo num cartão só */
+html.pz.pz-conta .abas-conteudo {
+  border: 1px solid var(--pz-line) !important; border-radius: var(--pz-r-lg); background: #fff;
+  padding: clamp(20px, 3vw, 32px) !important; box-sizing: border-box;
+}
+html.pz.pz-conta .caixa-dados { padding: 0 !important; margin: 0 !important; border: 0 !important; box-shadow: none !important; }
+html.pz.pz-conta .caixa-dados + .caixa-dados { margin-top: 32px !important; }
+/* títulos de seção: serifado, com o subtítulo embaixo (o tema deixava o subtítulo cinza-claro, ilegível) */
+html.pz.pz-conta #corpo :is(.caixa-dados, .caixa-sombreada) > h3.titulo,
+html.pz.pz-conta #corpo .cadastro h1.titulo {
+  margin: 0 0 20px !important; padding: 0 0 14px !important; border: 0 !important; border-bottom: 1px solid var(--pz-line) !important;
+  font: 400 clamp(24px, 2.4vw, 30px)/1.2 var(--pz-serif) !important; color: var(--pz-teal-deep) !important;
+}
+html.pz.pz-conta #corpo :is(.caixa-dados, .caixa-sombreada) > h3.titulo small,
+html.pz.pz-conta #corpo .cadastro h1.titulo small { display: block; margin-top: 6px; font: 400 15px/1.5 var(--pz-sans) !important; color: var(--pz-muted) !important; }
+html.pz.pz-conta #corpo .cadastro h1.titulo { border-bottom: 0 !important; padding-bottom: 0 !important; }
+/* blocos de dados (nome, e-mail, endereço) */
+html.pz.pz-conta .caixa-dados legend { display: flex !important; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; width: 100%; font-size: 20px !important; }
+html.pz.pz-conta .caixa-dados legend a {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 16px; float: none !important;
+  border: 1px solid var(--pz-teal-deep); border-radius: 999px; font: 600 14px/1 var(--pz-sans) !important; color: var(--pz-teal-deep) !important; text-decoration: none;
+}
+html.pz.pz-conta .caixa-dados legend a:hover { background: var(--pz-teal-soft); }
+html.pz.pz-conta .caixa-dados legend a i { display: inline-block !important; font-size: 12px; }
+html.pz.pz-conta .caixa-info { margin: 0 !important; padding: 16px 20px !important; list-style: none; border-radius: var(--pz-r-md); background: var(--pz-porcelain) !important; border: 0 !important; }
+html.pz.pz-conta .caixa-info li { margin: 0; padding: 4px 0; font: 400 15px/1.5 var(--pz-sans); color: var(--pz-ink); overflow-wrap: anywhere; }
+html.pz.pz-conta .caixa-info li b { font-weight: 600; color: var(--pz-teal-deep) !important; }
+html.pz.pz-conta .caixa-dados .acao-editar { display: flex !important; flex-wrap: wrap; justify-content: flex-start; gap: 12px; margin-top: 16px !important; text-align: left; }
+html.pz.pz-conta .caixa-dados .acao-editar > * { float: none !important; margin: 0 !important; }
+html.pz.pz-conta .caixa-dados .acao-editar .botao i { margin-right: 6px; font-size: 13px; }
+/* dados em duas colunas (a margem do tema somada às larguras estourava a linha e empilhava tudo) */
+html.pz.pz-conta .caixa-dados > .row-fluid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 32px; }
+html.pz.pz-conta .caixa-dados > .row-fluid::before,
+html.pz.pz-conta .caixa-dados > .row-fluid::after { display: none; }
+html.pz.pz-conta .caixa-dados > .row-fluid > [class*="span"] { width: auto !important; margin: 0 !important; float: none !important; }
+html.pz.pz-conta .caixa-dados > .row-fluid > .span12 { grid-column: 1 / -1; }
+@media (max-width: 767px) { html.pz.pz-conta .caixa-dados > .row-fluid { grid-template-columns: minmax(0, 1fr); } }
+html.pz.pz-conta .caixa-dados fieldset legend { margin-top: 0 !important; }
+html.pz.pz-conta .caixa-dados fieldset + fieldset { margin-top: 24px; }
+
+/* listas vazias (pedidos, desejos, cartões): mensagem centrada com respiro */
+html.pz.pz-conta .caixa-destaque { padding: clamp(24px, 5vw, 56px) 16px !important; border: 0 !important; background: none !important; text-align: center; }
+html.pz.pz-conta .caixa-destaque h4,
+html.pz.pz-conta .abas-conteudo .caixa-dados > p.text-center strong { display: block; margin: 0 0 8px; font: 400 22px/1.3 var(--pz-serif) !important; color: var(--pz-teal-deep) !important; }
+html.pz.pz-conta .caixa-destaque p { max-width: 46ch; margin: 0 auto; font: 400 15px/1.6 var(--pz-sans); color: var(--pz-muted); }
+html.pz.pz-conta .abas-conteudo .caixa-dados > br:first-child { display: none; }
+html.pz.pz-conta .abas-conteudo .caixa-dados > p.text-center { padding: clamp(24px, 5vw, 56px) 16px; margin: 0; text-align: center; }
+
+/* formulários da conta (editar dados, senha, endereço) em duas colunas no computador */
+@media (min-width: 768px) {
+  html.pz.pz-conta body:not(.pagina-login):not(.pagina-cadastro) #corpo form :is(.caixa-sombreada, fieldset):has(> .control-group) { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 20px; }
+  html.pz.pz-conta body:not(.pagina-login):not(.pagina-cadastro) #corpo form :is(.caixa-sombreada, fieldset):has(> .control-group) > :not(.control-group) { grid-column: 1 / -1; }
+}
+html.pz.pz-conta #corpo form .help-block { margin: 6px 0 0 !important; padding: 0 !important; font: 400 13px/1.4 var(--pz-sans) !important; color: var(--pz-muted) !important; }
+html.pz.pz-conta #corpo .help-inline i { display: none !important; }
+html.pz.pz-conta #corpo .help-inline a { font-size: 14px; color: var(--pz-teal-deep) !important; text-decoration: underline; text-underline-offset: 3px; }
+/* campo que não pode ser alterado (e-mail) com cara de bloqueado */
+html.pz.pz-conta #corpo :is(input[readonly], input[disabled], select[disabled]) { background-color: var(--pz-porcelain) !important; color: var(--pz-muted) !important; cursor: not-allowed; }
+html.pz.pz-conta #corpo form .acao-editar { margin-top: 24px !important; }
+/* botões dos blocos dividem a largura por igual (quando quebram de linha, ficam do mesmo tamanho) */
+html.pz.pz-conta .caixa-dados .acao-editar > .botao { flex: 1 0 auto; justify-content: center; white-space: nowrap; }
+@media (max-width: 991px) {
+  /* celular: o menu é só a fileira de pílulas (repete aqui porque as regras gerais do menu vêm depois) */
+  html.pz.pz-conta .conta-menu { padding: 0 !important; background: none !important; border: 0 !important; }
+  html.pz.pz-conta .conta-menu .nome-usuario { display: none !important; }
+}
+@media (max-width: 991px) {
+  html.pz.pz-conta body:not(.pagina-login) .conta-menu.caixa-sombreada { padding: 0 !important; background: none !important; border: 0 !important; border-radius: 0 !important; }
+}
+/* rodapé: a coluna das redes não tinha o respiro lateral das outras (no celular o "Siga-nos!" encostava na borda) */
+html.pz #rodape .institucional .col-sociais { padding-left: 15px !important; padding-right: 15px !important; box-sizing: border-box; }
+/* títulos das páginas da conta em qualquer nível (em "editar" e "senha" o h3 fica dentro de uma coluna) */
+html.pz.pz-conta body:not(.pagina-login) #corpo h3.titulo {
+  margin: 0 0 20px !important; padding: 0 0 14px !important; border: 0 !important; border-bottom: 1px solid var(--pz-line) !important;
+  font: 400 clamp(24px, 2.4vw, 30px)/1.2 var(--pz-serif) !important; color: var(--pz-teal-deep) !important;
+}
+html.pz.pz-conta body:not(.pagina-login) #corpo h3.titulo small { display: block; margin-top: 6px; font: 400 15px/1.5 var(--pz-sans) !important; color: var(--pz-muted) !important; }
+/* campo bloqueado (e-mail): mesma força da regra geral dos campos, declarada depois */
+html.pz.pz-conta body:not(.pagina-login) #corpo :is(input[readonly], input[disabled], select[disabled]) { background-color: var(--pz-porcelain) !important; color: var(--pz-muted) !important; cursor: not-allowed; }
+/* alterar senha: a atual sozinha na primeira linha; nova senha e confirmação lado a lado */
+@media (min-width: 768px) {
+  html.pz.pz-conta body:not(.pagina-login) #corpo form.large-label :is(.caixa-sombreada, fieldset) > .control-group:first-of-type { grid-column: 1 / -1; max-width: calc(50% - 10px); }
+}
+@media (min-width: 768px) {
+  html.pz.pz-conta body:not(.pagina-login) #corpo form.large-label .row-fluid > .control-group:first-child { grid-column: 1 / -1; max-width: calc(50% - 16px); }
+}
+/* menu da conta em tela pequena: todas as opções à vista numa grade (sem rolagem lateral, que não dava
+   para arrastar com o mouse e não tinha indicação no celular) */
+@media (max-width: 991px) {
+  html.pz.pz-conta .conta-menu .menu-simples { display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; overflow: visible !important; padding: 0 !important; }
+  html.pz.pz-conta .conta-menu .menu-simples li a { justify-content: center; text-align: center; white-space: normal !important; min-height: 44px; padding: 6px 12px !important; line-height: 1.2 !important; }
+}
+@media (max-width: 599px) {
+  html.pz.pz-conta .conta-menu .menu-simples { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* ---------- Janela "Produto adicionado" (abre ao clicar em Comprar) ----------
+   Mesmo desenho das outras janelas: filete dourado, título serifado, botões em pílula.
+   No celular: selo de confirmação, "Ir para o carrinho" em destaque e "Continuar comprando" em contorno. */
+html.pz .modal-comprar-ajax-status .fancybox-skin {
+  padding: 0 !important; background: var(--pz-paper) !important; border-top: 3px solid var(--pz-gold);
+}
+html.pz .modal-comprar-ajax-status .fancybox-inner { height: auto !important; overflow: visible !important; }
+html.pz #comprar-ajax-status .sucesso,
+html.pz #comprar-ajax-status .erro { padding: 28px 24px 24px; font-family: var(--pz-sans); }
+html.pz #comprar-ajax-status .head {
+  margin: 0 32px 20px !important; padding: 0 !important; text-align: center;
+  font: 400 22px/1.3 var(--pz-serif) !important; color: var(--pz-teal-deep) !important;
+}
+/* selo de confirmação acima do texto */
+html.pz #comprar-ajax-status .head::before {
+  content: ''; display: block; width: 52px; height: 52px; margin: 0 auto 14px; border-radius: 50%;
+  background: var(--pz-teal-soft) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23386a75' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 24px no-repeat;
+}
+html.pz #comprar-ajax-status .buttons { display: flex !important; flex-direction: column-reverse; gap: 10px; margin: 0 !important; padding: 0 !important; background: none !important; border: 0 !important; }
+html.pz #comprar-ajax-status .buttons .botao {
+  height: 48px; margin: 0 !important; padding: 0 24px !important; float: none !important; box-sizing: border-box;
+  border-radius: 999px !important; box-shadow: none !important; text-shadow: none !important; text-align: center; text-decoration: none !important;
+  font: 600 15px/46px var(--pz-sans) !important;
+}
+html.pz #comprar-ajax-status .buttons .botao.principal { background: var(--pz-teal-deep) !important; border: 1px solid var(--pz-teal-deep) !important; color: #fff !important; }
+html.pz #comprar-ajax-status .buttons .botao.principal:hover { background: var(--pz-teal) !important; }
+html.pz #comprar-ajax-status .buttons .botao.principal i { margin-right: 8px; }
+html.pz #comprar-ajax-status .buttons .continuar-comprando { background: #fff !important; border: 1px solid var(--pz-teal-deep) !important; color: var(--pz-teal-deep) !important; }
+html.pz #comprar-ajax-status .buttons .continuar-comprando:hover { background: var(--pz-teal-soft) !important; }
+/* computador: resumo do carrinho em cima, "Continuar comprando" à esquerda e "Finalizar compra" à direita */
+@media (min-width: 768px) {
+  html.pz #comprar-ajax-status .buttons { flex-direction: row; justify-content: space-between; margin-top: 20px !important; }
+}
+/* erro ao adicionar (aviso da plataforma) */
+html.pz #comprar-ajax-status .erro .msg { display: block; margin: 0 32px; text-align: center; font: 400 16px/1.5 var(--pz-sans); color: #6e2a24; }
+html.pz #comprar-ajax-status .erro .msg strong { display: block; margin-top: 6px; font: 400 22px/1.3 var(--pz-serif); color: #8f3a32; }
+/* "×" igual ao das outras janelas */
+html.pz .modal-comprar-ajax-status .fancybox-close {
+  top: 8px !important; right: 8px !important; width: 44px !important; height: 44px !important; border-radius: 50%; background: none !important;
+}
+html.pz .modal-comprar-ajax-status .fancybox-close::before { content: '×'; display: block; font: 300 30px/44px var(--pz-sans); color: var(--pz-teal-deep); text-align: center; }
+html.pz .modal-comprar-ajax-status .fancybox-close:hover { background: var(--pz-porcelain) !important; }
+
+/* etiqueta "produto adicionado" no card (aparece depois de comprar): pílula como as outras, com um ✓ */
+html.pz .listagem .bandeira-carrinho {
+  display: inline-flex !important; align-items: center; gap: 5px; padding: 7px 10px !important; border-radius: 999px !important;
+  background: var(--pz-teal-deep) !important; border: 1px solid var(--pz-teal-deep) !important; color: #fff !important; box-shadow: none !important; text-shadow: none !important;
+  font: 500 12px/1 var(--pz-sans) !important; letter-spacing: .02em; text-transform: none !important;
+}
+html.pz .listagem .bandeira-carrinho::first-letter { text-transform: uppercase; }
+html.pz .listagem .bandeira-carrinho::before { content: '✓'; font-size: 12px; line-height: 1; }
+
+/* número de itens no ícone do carrinho: pílula com contorno branco, encostada no canto do ícone */
+html.pz .theme-functions .qtd-carrinho {
+  min-width: 18px; height: 18px; padding: 0 5px !important; box-sizing: border-box; border-radius: 9px !important;
+  font: 600 11px/18px var(--pz-sans) !important; text-align: center; color: #fff !important; background: var(--pz-teal-deep) !important;
+  box-shadow: 0 0 0 2px #fff;
+}
+@media (max-width: 767px) {
+  /* no celular o botão tem 44px de largura: o número passa a se posicionar pelo ícone (centro + metade do ícone) */
+  html.pz .theme-functions .carrinho > a { position: relative; }
+  html.pz .theme-functions .carrinho .qtd-carrinho { top: 8px !important; right: auto !important; left: calc(50% + 3px) !important; }
+}
+/* botões da janela centralizados (algumas regras gerais deixam o botão em flex sem centralizar) */
+html.pz #comprar-ajax-status .buttons .botao { justify-content: center; align-items: center; }
+/* etiqueta: "produto adicionado" vira "✓ No carrinho" na tela (mais curto e claro; o texto original continua no HTML) */
+html.pz .listagem .bandeira-carrinho { font-size: 0 !important; gap: 0; }
+html.pz .listagem .bandeira-carrinho::before { content: "✓ No carrinho"; font: 500 12px/1 var(--pz-sans); }
+/* janela de produto adicionado, computador: título de confirmação acima do resumo (o tema só mostra o aviso no celular) */
+html.pz #comprar-ajax-status #carrinho-mini::before {
+  content: 'Produto adicionado ao carrinho'; display: block; margin: 0 48px 18px 0; padding: 2px 0 2px 40px; min-height: 30px;
+  font: 400 24px/30px var(--pz-serif); color: var(--pz-teal-deep);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23dee6e8'/%3E%3Cpath d='M9.5 16.5l4.5 4.5 8.5-9' fill='none' stroke='%23386a75' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") left center / 30px no-repeat;
+}
+/* quantidade: − campo + numa linha só (o + quebrava para baixo) */
+html.pz #comprar-ajax-status #carrinho-mini .quantidade { display: inline-flex !important; flex-wrap: nowrap !important; align-items: center; gap: 6px; width: auto !important; }
+html.pz #comprar-ajax-status #carrinho-mini .quantidade > * { flex: none; margin: 0 !important; }
+html.pz #comprar-ajax-status #carrinho-mini .quantidade .input-mini { width: 44px !important; text-align: center; }
+/* cupom: campo com largura para digitar o código */
+html.pz #comprar-ajax-status #carrinho-mini #usarCupom { width: 200px !important; max-width: 100%; }
+/* "Filtrar" é o botão do celular: com a coluna de filtros à vista (768px+), ele só repetia os filtros */
+@media (min-width: 768px) {
+  html.pz .ordenar-listagem .filtro-mobile,
+  html.pz .ordenar-listagem .filtro-mobile-itens { display: none !important; }
+}
+html.pz #comprar-ajax-status #carrinho-mini::before { text-align: left; }
+
+/* ---------- Carrinho lateral (abre ao passar o mouse no ícone do carrinho) ----------
+   Título no topo, itens com foto em moldura, total e botão em pílula no rodapé; fica acima do botão do WhatsApp. */
+html.pz .carrinho .carrinho-interno-ajax .carrinho-interno {
+  z-index: 100000 !important; display: flex !important; flex-direction: column; padding: 0 !important;
+  background: var(--pz-paper) !important; box-shadow: -24px 0 48px -24px rgba(44, 84, 93, .45); font-family: var(--pz-sans);
+}
+html.pz .carrinho .carrinho-interno-ajax .carrinho-interno,
+html.pz .carrinho .carrinho-interno-ajax .carrinho-interno * { box-sizing: border-box !important; }
+html.pz .carrinho .carrinho-interno-ajax .carrinho-interno::before {
+  content: 'Seu carrinho'; display: block; flex: none; padding: 28px 24px 16px; border-bottom: 1px solid var(--pz-line);
+  font: 400 26px/1.2 var(--pz-serif); color: var(--pz-teal-deep);
+}
+html.pz .carrinho .carrinho-interno-ajax .carrinho-interno > ul { flex: 1 1 auto; height: auto !important; margin: 0 !important; padding: 8px 24px !important; overflow-y: auto; list-style: none; }
+html.pz .carrinho .carrinho-interno > ul > li { display: grid !important; grid-template-columns: 64px minmax(0, 1fr); grid-template-rows: auto auto; column-gap: 14px; row-gap: 6px; align-items: start; padding: 16px 0 !important; margin: 0 !important; border: 0 !important; border-bottom: 1px solid var(--pz-line) !important; }
+html.pz .carrinho .carrinho-interno > ul > li .imagem-produto {
+  grid-column: 1; grid-row: 1 / span 2; width: 64px !important; height: 64px !important; padding: 4px; position: static !important;
+  display: flex !important; align-items: center; justify-content: center; border: 1px solid var(--pz-line); border-radius: var(--pz-r-md); background: #fff; overflow: hidden;
+}
+html.pz .carrinho .carrinho-interno > ul > li .imagem-produto img { position: static !important; width: 100% !important; height: 100% !important; object-fit: contain; }
+html.pz .carrinho .carrinho-interno > ul > li .nome-produto { grid-column: 2; grid-row: 1; margin: 0 !important; font: 500 15px/1.35 var(--pz-sans) !important; color: var(--pz-ink) !important; }
+html.pz .carrinho .carrinho-interno > ul > li .preco-produto { grid-column: 2; grid-row: 2; position: static !important; width: auto !important; padding: 0 !important; }
+html.pz .carrinho .carrinho-interno > ul > li .preco-produto .preco-promocional,
+html.pz .carrinho .carrinho-interno > ul > li .preco-produto strong { font: 400 18px/1.2 var(--pz-serif) !important; color: var(--pz-teal-deep) !important; }
+html.pz .carrinho .carrinho-interno > ul > li .preco-produto .preco-venda { font: 400 13px/1.2 var(--pz-sans) !important; color: var(--pz-muted) !important; }
+html.pz .carrinho .carrinho-interno .carrinho-rodape { flex: none; padding: 20px 24px 24px !important; border-top: 1px solid var(--pz-line); background: var(--pz-porcelain); }
+html.pz .carrinho .carrinho-interno .carrinho-rodape .carrinho-info { display: block !important; margin: 0 0 16px !important; text-align: left !important; float: none !important; }
+html.pz .carrinho .carrinho-interno .carrinho-rodape .carrino-total { display: flex !important; align-items: baseline; justify-content: space-between; font: 500 15px/1.2 var(--pz-sans) !important; color: var(--pz-ink) !important; }
+html.pz .carrinho .carrinho-interno .carrinho-rodape .carrino-total strong { font: 400 22px/1.2 var(--pz-serif) !important; color: var(--pz-teal-deep) !important; }
+html.pz .carrinho .carrinho-interno .carrinho-rodape .botao {
+  display: flex !important; align-items: center; justify-content: center; width: 100% !important; height: 48px; margin: 0 !important; padding: 0 24px !important;
+  border-radius: 999px !important; font: 600 15px/1 var(--pz-sans) !important; color: #fff !important; text-shadow: none !important; box-shadow: none !important;
+}
+/* nome do item: o tema fixa 119px de largura e corta em 65px de altura */
+html.pz .carrinho .carrinho-interno > ul > li .nome-produto { width: auto !important; height: auto !important; max-height: none !important; overflow: visible !important; padding: 0 !important; display: -webkit-box !important; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden !important; }
+/* o carrinho lateral mora dentro do cabeçalho (camada 1000, a mesma do WhatsApp): o botão do WhatsApp sai enquanto ele está aberto */
+html.pz body:has(.carrinho.cart-visible) a[href*="wa.me"][style*="position:fixed"] { opacity: 0 !important; pointer-events: none !important; }
+/* número do carrinho: sem contorno branco (cobria o ícone), número centrado na bolinha
+   (o algarismo da Quicksand assenta 2px abaixo do centro da linha; o padding de baixo compensa) */
+html.pz .theme-functions .qtd-carrinho {
+  display: inline-flex !important; align-items: center; justify-content: center; box-shadow: none !important;
+  line-height: 1 !important; padding: 0 5px 2px !important; font-variant-numeric: tabular-nums;
+}
+@media (max-width: 767px) {
+  html.pz .theme-functions .carrinho .qtd-carrinho { top: 5px !important; left: calc(50% + 4px) !important; }
+}
+
+/* ---------- Carrinho: cálculo de frete e cupom ----------
+   O tema põe as opções de frete numa coluna estreita à direita (o nome da transportadora quebrava linha)
+   e o "Calcule o frete" solto no meio da altura. Aqui: formulário à esquerda no topo e opções em cartões.
+   Só aparência; escolher o frete continua sendo o mesmo botão de opção da plataforma. */
+/* computador: a tabela do carrinho vira grade, linha por linha. Na tabela, as opções de frete ficavam presas
+   às duas últimas colunas (Preço e Excluir, ~270px) e o nome da transportadora quebrava linha. */
+@media (min-width: 768px) {
+  html.pz .pagina-carrinho .caixa-sombreada > table.tabela-carrinho,
+  html.pz .pagina-carrinho .caixa-sombreada > table.tabela-carrinho > :is(thead, tbody, tfoot) { display: block !important; width: 100% !important; }
+  html.pz .pagina-carrinho .caixa-sombreada > table.tabela-carrinho tr:not(.visible-phone) { display: grid !important; grid-template-columns: 112px minmax(0, 1fr) 170px 150px 72px; align-items: center; }
+  html.pz .pagina-carrinho .caixa-sombreada > table.tabela-carrinho tr > :is(td, th):not(.visible-phone) { display: block !important; width: auto !important; min-width: 0; box-sizing: border-box; }
+  /* cabeçalho: "Produto" ocupa foto + nome */
+  html.pz .pagina-carrinho .caixa-sombreada > table.tabela-carrinho tr > th[colspan="2"] { grid-column: span 2; }
+  /* subtotal e cupom: um lado e outro; total: linha inteira */
+  html.pz .pagina-carrinho .caixa-sombreada > table.tabela-carrinho tr.bg-dark { grid-template-columns: minmax(0, 1fr) auto; }
+  html.pz .pagina-carrinho .caixa-sombreada > table.tabela-carrinho tr.bg-dark > td[colspan="6"] { grid-column: 1 / -1; }
+  /* frete: formulário à esquerda, opções ocupando o resto */
+  html.pz .pagina-carrinho .caixa-sombreada > table.tabela-carrinho tr.bg-dark:has(#formCalcularFrete) { grid-template-columns: minmax(260px, 320px) minmax(0, 1fr); gap: 20px 32px; align-items: start; padding: 24px 28px !important; }
+  html.pz .pagina-carrinho .caixa-sombreada > table.tabela-carrinho tr.bg-dark:has(#formCalcularFrete) > td { padding: 0 !important; border: 0 !important; }
+}
+html.pz .pagina-carrinho #formCalcularFrete .control-group { margin: 0 !important; }
+html.pz .pagina-carrinho #formCalcularFrete .control-label { display: block !important; float: none !important; width: auto !important; margin: 0 0 10px !important; padding: 0 !important; text-align: left !important; }
+html.pz .pagina-carrinho #formCalcularFrete .control-label b { font: 500 15px/1.3 var(--pz-sans) !important; color: var(--pz-ink) !important; text-align: left !important; }
+html.pz .pagina-carrinho #formCalcularFrete .controls { margin: 0 !important; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
+html.pz .pagina-carrinho #formCalcularFrete .help-inline { margin: 0 !important; padding: 0 !important; }
+html.pz .pagina-carrinho #formCalcularFrete .help-inline i { display: none; }
+/* opções de frete em cartões: prazo, transportadora e preço à direita; a marcada fica destacada */
+html.pz .pagina-carrinho .formas-envio ul { display: grid !important; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 8px; margin: 0 !important; padding: 0 !important; list-style: none; }
+html.pz .pagina-carrinho .formas-envio li { margin: 0 !important; padding: 0 !important; }
+html.pz .pagina-carrinho .formas-envio label.radio {
+  display: grid !important; grid-template-columns: 18px auto minmax(0, 1fr) auto; align-items: center; column-gap: 10px;
+  margin: 0 !important; padding: 12px 14px !important; min-height: 48px; box-sizing: border-box;
+  border: 1px solid var(--pz-line); border-radius: var(--pz-r-md); background: #fff; cursor: pointer;
+  font: 400 14px/1.3 var(--pz-sans) !important; color: var(--pz-ink) !important;
+  transition: border-color .15s var(--pz-ease), background-color .15s var(--pz-ease);
+}
+html.pz .pagina-carrinho .formas-envio label.radio:hover { border-color: var(--pz-teal-deep); }
+html.pz .pagina-carrinho .formas-envio label.radio:has(input:checked) { border-color: var(--pz-teal-deep); background: var(--pz-teal-soft); box-shadow: 0 0 0 1px var(--pz-teal-deep); }
+html.pz .pagina-carrinho .formas-envio label.radio input { grid-column: 1; position: static !important; float: none !important; width: 18px; height: 18px; margin: 0 !important; accent-color: var(--pz-teal-deep); }
+html.pz .pagina-carrinho .formas-envio label.radio .prazo { grid-column: 2; font-weight: 600; color: var(--pz-teal-deep); white-space: nowrap; }
+html.pz .pagina-carrinho .formas-envio label.radio .nome { grid-column: 3; grid-row: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--pz-muted); }
+html.pz .pagina-carrinho .formas-envio label.radio .valor { grid-column: 4; grid-row: 1; justify-self: end; font: 400 16px/1.2 var(--pz-serif) !important; color: var(--pz-teal-deep) !important; white-space: nowrap; }
+/* cupom com largura para digitar o código */
+html.pz .pagina-carrinho .tabela-carrinho input[name="cupom"] { width: 200px !important; max-width: 100%; }
+@media (max-width: 767px) {
+  html.pz .pagina-carrinho .tabela-carrinho tr:has(#formCalcularFrete) { grid-template-columns: minmax(0, 1fr); padding: 20px 16px !important; }
+  html.pz .pagina-carrinho .formas-envio ul { grid-template-columns: minmax(0, 1fr); }
+  /* no celular a transportadora vai para a linha de baixo, embaixo do prazo */
+  html.pz .pagina-carrinho .formas-envio label.radio { grid-template-columns: 18px minmax(0, 1fr) auto; row-gap: 2px; }
+  html.pz .pagina-carrinho .formas-envio label.radio input { grid-row: 1 / span 2; }
+  html.pz .pagina-carrinho .formas-envio label.radio .prazo { grid-column: 2; grid-row: 1; }
+  html.pz .pagina-carrinho .formas-envio label.radio .nome { grid-column: 2; grid-row: 2; white-space: normal; }
+  html.pz .pagina-carrinho .formas-envio label.radio .valor { grid-column: 3; grid-row: 1 / span 2; }
+}
+/* CEP com largura confortável; na opção marcada o nome da transportadora escurece (contraste no fundo claro) */
+html.pz .pagina-carrinho #formCalcularFrete #calcularFrete { width: 150px !important; }
+html.pz .pagina-carrinho .formas-envio label.radio:has(input:checked) .nome { color: var(--pz-ink); }
+/* acabamento do resumo do carrinho: células das linhas de resumo sem fundo próprio (faixa branca à direita, caixa atrás do CEP) */
+html.pz .pagina-carrinho .caixa-sombreada > table.tabela-carrinho tr.bg-dark > td { background: transparent !important; }
+/* transportadora alinhada à esquerda e em até 2 linhas, sem cortar o nome com reticências */
+html.pz .pagina-carrinho .formas-envio label.radio { text-align: left !important; }
+html.pz .pagina-carrinho .formas-envio label.radio .nome { white-space: normal !important; overflow: hidden; text-overflow: clip; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-height: 1.3; }
+/* linhas de resumo com o mesmo fundo de ponta a ponta */
+html.pz .pagina-carrinho .caixa-sombreada > table.tabela-carrinho tr.bg-dark { background: var(--pz-porcelain) !important; }
+/* opção de frete: prazo em cima, transportadora embaixo, preço à direita (o nome não corta nem centraliza) */
+html.pz .pagina-carrinho .formas-envio label.radio { grid-template-columns: 18px minmax(0, 1fr) auto !important; row-gap: 2px; }
+html.pz .pagina-carrinho .formas-envio label.radio input { grid-row: 1 / span 2; }
+html.pz .pagina-carrinho .formas-envio label.radio .prazo { grid-column: 2 !important; grid-row: 1 !important; }
+html.pz .pagina-carrinho .formas-envio label.radio .nome { grid-column: 2 !important; grid-row: 2 !important; text-align: left !important; justify-self: start; display: block !important; -webkit-line-clamp: unset; }
+html.pz .pagina-carrinho .formas-envio label.radio .valor { grid-column: 3 !important; grid-row: 1 / span 2 !important; }
+html.pz .pagina-carrinho .formas-envio label.radio .prazo { text-align: left !important; justify-self: start; }
+html.pz .pagina-carrinho .formas-envio label.radio .valor { text-align: right !important; }
+@media (min-width: 768px) {
+  /* divisória das linhas de resumo na linha inteira (as bordas por célula ficavam desencontradas na ponta direita) */
+  html.pz .pagina-carrinho .caixa-sombreada > table.tabela-carrinho tr.bg-dark > td { border: 0 !important; }
+  html.pz .pagina-carrinho .caixa-sombreada > table.tabela-carrinho tr.bg-dark + tr.bg-dark { border-top: 1px solid var(--pz-line) !important; }
+}
+/* tablet (768–991): colunas fixas mais estreitas e frete empilhado (formulário em cima, opções embaixo) */
+@media (min-width: 768px) and (max-width: 991px) {
+  html.pz .pagina-carrinho .caixa-sombreada > table.tabela-carrinho tr:not(.visible-phone) { grid-template-columns: 88px minmax(0, 1fr) 140px 120px 56px; }
+  html.pz .pagina-carrinho .caixa-sombreada > table.tabela-carrinho tr.bg-dark { grid-template-columns: minmax(0, 1fr) auto; }
+  html.pz .pagina-carrinho .caixa-sombreada > table.tabela-carrinho tr.bg-dark:has(#formCalcularFrete) { grid-template-columns: minmax(0, 1fr); }
+  html.pz .pagina-carrinho .formas-envio ul { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+}
+/* carrinho: CEP + Calcular e Cupom + Usar cupom como uma pílula só, campo e botão com a mesma altura
+   (o campo tinha 36px e o botão 40px, com o texto preso no alto) */
+html.pz .pagina-carrinho :is(#formCalcularFrete, .tabela-carrinho form) .input-append { display: inline-flex !important; align-items: stretch; height: 44px; margin: 0 !important; font-size: 0; vertical-align: middle; }
+html.pz .pagina-carrinho :is(#formCalcularFrete, .tabela-carrinho form) .input-append input {
+  height: 44px !important; margin: 0 !important; padding: 0 18px !important; box-sizing: border-box; text-align: left !important;
+  border: 1px solid rgba(44, 84, 93, .28) !important; border-right: 0 !important; border-radius: 999px 0 0 999px !important;
+  background: #fff !important; box-shadow: none !important; font: 400 15px/1 var(--pz-sans) !important; color: var(--pz-ink) !important;
+}
+html.pz .pagina-carrinho :is(#formCalcularFrete, .tabela-carrinho form) .input-append input:focus { border-color: var(--pz-teal) !important; box-shadow: 0 0 0 3px var(--pz-teal-soft) !important; outline: none; position: relative; z-index: 1; }
+html.pz .pagina-carrinho :is(#formCalcularFrete, .tabela-carrinho form) .input-append .btn {
+  display: inline-flex !important; align-items: center; justify-content: center; gap: 6px; height: 44px !important; margin: 0 !important; padding: 0 20px !important;
+  border: 0 !important; border-radius: 0 999px 999px 0 !important; box-shadow: none !important; text-shadow: none !important; vertical-align: top;
+  background: var(--pz-teal-deep) !important; color: #fff !important; font: 600 14px/1 var(--pz-sans) !important; white-space: nowrap;
+}
+html.pz .pagina-carrinho :is(#formCalcularFrete, .tabela-carrinho form) .input-append .btn:hover { background: var(--pz-teal) !important; }
+html.pz .pagina-carrinho :is(#formCalcularFrete, .tabela-carrinho form) .input-append .btn i { display: none; }
+
+/* bloco de resumo (subtotal, frete, cupom, total): cantos arredondados e borda fina, separado do produto */
+html.pz .pagina-carrinho .caixa-sombreada > table.tabela-carrinho tr.bg-dark { border-left: 1px solid var(--pz-line) !important; border-right: 1px solid var(--pz-line) !important; }
+html.pz .pagina-carrinho .caixa-sombreada > table.tabela-carrinho tr:not(.bg-dark) + tr.bg-dark { margin-top: 20px; border-top: 1px solid var(--pz-line) !important; border-radius: var(--pz-r-lg) var(--pz-r-lg) 0 0; }
+html.pz .pagina-carrinho .caixa-sombreada > table.tabela-carrinho tr.bg-dark:last-child { border-bottom: 1px solid var(--pz-line) !important; border-radius: 0 0 var(--pz-r-lg) var(--pz-r-lg); }
+@media (max-width: 767px) {
+  /* no celular o subtotal fica escondido: o arredondado de cima vai para a primeira linha visível (frete) */
+  html.pz .pagina-carrinho .caixa-sombreada > table.tabela-carrinho tr.bg-dark { display: block; }
+  html.pz .pagina-carrinho .caixa-sombreada > table.tabela-carrinho tr.hidden-phone + tr.bg-dark { margin-top: 20px; border-top: 1px solid var(--pz-line) !important; border-radius: var(--pz-r-lg) var(--pz-r-lg) 0 0; }
+}
+@media (max-width: 767px) {
+  /* primeira célula do bloco de resumo sem a linha de cima (o bloco já tem a borda arredondada) */
+  html.pz .pagina-carrinho .caixa-sombreada > table.tabela-carrinho tr.bg-dark > td:first-child { border-top: 0 !important; }
+}
+
+/* ---------- Variáveis de cor do tema da plataforma trocadas pelas da marca ----------
+   O tema usa --dc1 = #ff0000 (vermelho) em detalhes como o sublinhado do menu no hover. */
+html.pz {
+  --dc1: #386a75;
+  --tc1: #1c1c1c;
+  --tc2: #686868;
+  --bg2: #f1f5f6;
+}
+
+/* ---------- Menu do topo (computador): painel em vez de lista com submenus voando para o lado ----------
+   Os submenus abriam à direita e saíam da tela em telas menores. Aqui as subcategorias ficam
+   logo abaixo da categoria, recuadas, e listas longas viram duas colunas. */
+@media (min-width: 768px) {
+  html.pz .menu.superior .nivel-um > li::before { background-color: var(--pz-gold) !important; }
+  html.pz .menu.superior .nivel-um > li > .nivel-dois {
+    left: 50% !important; right: auto !important; top: 100% !important; transform: translateX(-50%);
+    width: max-content; min-width: 240px; max-width: min(560px, calc(100vw - 32px)); box-sizing: border-box;
+    margin: 0 !important; padding: 10px !important; border: 1px solid var(--pz-line) !important; border-radius: var(--pz-r-lg) !important;
+    background: #fff !important; box-shadow: 0 24px 48px -24px rgba(44, 84, 93, .4) !important;
+  }
+  html.pz .menu.superior .nivel-um > li > .nivel-dois:has(> li:nth-child(9)) { width: min(540px, calc(100vw - 32px)); columns: 2; column-gap: 6px; }
+  html.pz .menu.superior .nivel-dois > li { break-inside: avoid; margin: 0 !important; padding: 0 !important; border: 0 !important; background: none !important; }
+  html.pz .menu.superior .nivel-dois > li > a {
+    display: block; margin: 0 !important; padding: 9px 12px !important; border-radius: 8px;
+    font: 500 15px/1.3 var(--pz-sans) !important; color: var(--pz-ink) !important; white-space: normal; opacity: 1 !important;
+  }
+  html.pz .menu.superior .nivel-dois a:hover { background: var(--pz-porcelain) !important; color: var(--pz-teal-deep) !important; text-decoration: none; }
+  /* subcategorias: aparecem embaixo da categoria (sem voar para fora da tela) */
+  html.pz .menu.superior .nivel-dois .nivel-tres {
+    display: block !important; position: static !important; left: auto !important; top: auto !important; min-width: 0 !important;
+    margin: 0 0 6px 18px !important; padding: 0 0 0 8px !important; border: 0 !important; border-left: 1px solid var(--pz-line) !important;
+    background: none !important; box-shadow: none !important;
+  }
+  html.pz .menu.superior .nivel-tres li { margin: 0 !important; padding: 0 !important; border: 0 !important; background: none !important; }
+  html.pz .menu.superior .nivel-tres a { display: block; padding: 6px 10px !important; border-radius: 6px; font: 400 14px/1.3 var(--pz-sans) !important; color: var(--pz-muted) !important; }
+  html.pz .menu.superior .nivel-dois .com-filho > a { margin-right: 0 !important; }
+  html.pz .menu.superior .nivel-dois .com-filho > a i,
+  html.pz .menu.superior .nivel-dois .com-filho > i { display: none !important; }
+}
+
+/* etiqueta "No carrinho": mesmo recuo de 10px das outras etiquetas e do botão do carrinho (ficava colada na borda) */
+html.pz .listagem .bandeiras-produto { top: 10px !important; left: 10px !important; }
+html.pz .listagem .bandeiras-produto > .bandeira-carrinho { margin: 0 !important; }
+
+/* janela "produto adicionado" (computador): mesmo acabamento da página do carrinho —
+   bloco de subtotal e cupom com cantos arredondados e borda fina, cupom em pílula de 44px */
+html.pz #comprar-ajax-status #carrinho-mini .table-footer {
+  border-collapse: separate !important; border-spacing: 0; margin: 16px 0 0 !important;
+  border: 1px solid var(--pz-line) !important; border-radius: var(--pz-r-lg); overflow: hidden; background: var(--pz-porcelain);
+}
+html.pz #comprar-ajax-status #carrinho-mini .table-footer tr,
+html.pz #comprar-ajax-status #carrinho-mini .table-footer td { background: transparent !important; border: 0 !important; }
+html.pz #comprar-ajax-status #carrinho-mini .table-footer tr + tr td { border-top: 1px solid var(--pz-line) !important; }
+html.pz #comprar-ajax-status #carrinho-mini .table-footer td { padding: 16px 20px !important; }
+html.pz #comprar-ajax-status #carrinho-mini .table-footer .control-group { margin: 0 !important; }
+html.pz #comprar-ajax-status #carrinho-mini .table-footer .control-label { float: none !important; width: auto !important; margin: 0 0 8px !important; padding: 0 !important; text-align: left !important; }
+html.pz #comprar-ajax-status #carrinho-mini .table-footer .control-label b { font: 500 14px/1.3 var(--pz-sans) !important; color: var(--pz-ink) !important; }
+html.pz #comprar-ajax-status #carrinho-mini .table-footer .controls { margin: 0 !important; }
+html.pz #comprar-ajax-status #carrinho-mini .input-append { display: inline-flex !important; align-items: stretch; height: 44px; margin: 0 !important; font-size: 0; }
+html.pz #comprar-ajax-status #carrinho-mini .input-append input {
+  width: 200px !important; height: 44px !important; margin: 0 !important; padding: 0 18px !important; box-sizing: border-box; text-align: left !important;
+  border: 1px solid rgba(44, 84, 93, .28) !important; border-right: 0 !important; border-radius: 999px 0 0 999px !important;
+  background: #fff !important; box-shadow: none !important; font: 400 15px/1 var(--pz-sans) !important; color: var(--pz-ink) !important;
+}
+html.pz #comprar-ajax-status #carrinho-mini .input-append input:focus { border-color: var(--pz-teal) !important; box-shadow: 0 0 0 3px var(--pz-teal-soft) !important; outline: none; }
+html.pz #comprar-ajax-status #carrinho-mini .input-append .btn {
+  display: inline-flex !important; align-items: center; justify-content: center; height: 44px !important; margin: 0 !important; padding: 0 20px !important;
+  border: 0 !important; border-radius: 0 999px 999px 0 !important; box-shadow: none !important; text-shadow: none !important;
+  background: var(--pz-teal-deep) !important; color: #fff !important; font: 600 14px/1 var(--pz-sans) !important; white-space: nowrap;
+}
+html.pz #comprar-ajax-status #carrinho-mini .input-append .btn:hover { background: var(--pz-teal) !important; }
+/* lista de itens também numa moldura arredondada */
+html.pz #comprar-ajax-status #carrinho-mini .scroll { border: 1px solid var(--pz-line); border-radius: var(--pz-r-lg); overflow: auto; }
+html.pz #comprar-ajax-status #carrinho-mini .table-body { margin: 0 !important; }
+html.pz #comprar-ajax-status #carrinho-mini .table-body td { border-top: 0 !important; }
+html.pz #comprar-ajax-status #carrinho-mini .table-body tr + tr td { border-top: 1px solid var(--pz-line) !important; }
+html.pz #comprar-ajax-status #carrinho-mini .table-header { margin: 0 0 8px !important; }
+html.pz #comprar-ajax-status #carrinho-mini .table-header th { border: 0 !important; }
+
+/* ---------- Menu lateral de categorias (aparece em categorias sem filtros, como uma categoria vazia) ---------- */
+/* o tema desenha a caixa mesmo sem nenhuma categoria dentro (o quadro cinza vazio ao lado) */
+html.pz .coluna .menu.lateral:not(:has(li)) { display: none !important; }
+html.pz .coluna .menu.lateral { padding: 18px 16px !important; border: 0 !important; border-radius: var(--pz-r-md); background: var(--pz-porcelain) !important; box-shadow: none !important; box-sizing: border-box; margin-bottom: 16px; }
+html.pz .coluna .menu.lateral :is(ul, li) { margin: 0 !important; padding: 0 !important; border: 0 !important; background: none !important; box-shadow: none !important; list-style: none; }
+html.pz .coluna .menu.lateral i { display: none !important; }
+html.pz .coluna .menu.lateral .nivel-um > li > a { display: block; padding: 0 4px 12px !important; margin-bottom: 8px !important; border-bottom: 1px solid var(--pz-line) !important; background: none !important; box-shadow: none !important; text-decoration: none !important; }
+html.pz .coluna .menu.lateral .nivel-um > li > a .titulo { font: 400 19px/1.25 var(--pz-serif) !important; color: var(--pz-teal-deep) !important; }
+html.pz .coluna .menu.lateral .nivel-dois,
+html.pz .coluna .menu.lateral .nivel-tres { display: block !important; position: static !important; min-width: 0 !important; }
+html.pz .coluna .menu.lateral .nivel-dois a {
+  display: block; padding: 8px 10px !important; border-radius: 8px; text-decoration: none !important;
+  font: 500 14px/1.3 var(--pz-sans) !important; color: var(--pz-ink) !important; background: none !important;
+  transition: background-color .15s var(--pz-ease), color .15s var(--pz-ease);
+}
+html.pz .coluna .menu.lateral .nivel-dois a:hover { background: #fff !important; color: var(--pz-teal-deep) !important; }
+html.pz .coluna .menu.lateral .nivel-tres { margin: 0 0 4px 14px !important; padding-left: 8px !important; border-left: 1px solid var(--pz-line) !important; }
+html.pz .coluna .menu.lateral .nivel-tres a { font: 400 14px/1.3 var(--pz-sans) !important; color: var(--pz-muted) !important; padding: 6px 10px !important; }
+/* categoria em que a pessoa está: preenchida, como o filtro selecionado */
+html.pz .coluna .menu.lateral li.ativo > a,
+html.pz .coluna .menu.lateral li.ativo > a:hover { background: var(--pz-teal-deep) !important; color: #fff !important; }
+
+/* ---------- Aviso de categoria sem produtos ---------- */
+html.pz .conteudo .caixa-destaque {
+  margin: 0 !important; padding: clamp(40px, 6vw, 72px) 24px !important; text-align: center;
+  border: 1px solid var(--pz-line) !important; border-radius: var(--pz-r-lg); background: #fff !important; box-shadow: none !important;
+}
+html.pz .conteudo .caixa-destaque::before {
+  content: ''; display: block; width: 56px; height: 56px; margin: 0 auto 18px; border-radius: 50%;
+  background: var(--pz-teal-soft) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23386a75' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 7h12l-1 13H7L6 7z'/%3E%3Cpath d='M9 7a3 3 0 0 1 6 0'/%3E%3C/svg%3E") center / 26px no-repeat;
+}
+html.pz .conteudo .caixa-destaque h1 { margin: 0 0 10px !important; font: 400 clamp(24px, 2.6vw, 32px)/1.2 var(--pz-serif) !important; color: var(--pz-teal-deep) !important; }
+html.pz .conteudo .caixa-destaque p { max-width: 46ch; margin: 0 auto 24px !important; font: 400 16px/1.6 var(--pz-sans) !important; color: var(--pz-muted) !important; }
+/* tablet: o aviso vem antes da lista de categorias (antes ficava lá embaixo) */
+@media (max-width: 991px) {
+  html.pz .secao-principal:has(> .conteudo .caixa-destaque) { display: flex !important; flex-direction: column; }
+  html.pz .secao-principal:has(> .conteudo .caixa-destaque) > .conteudo { order: -1; margin-bottom: 16px !important; }
+}
+/* nomes longos quebram linha dentro da lateral (o tema deixava em uma linha só e vazava) */
+html.pz .coluna .menu.lateral a { white-space: normal !important; overflow-wrap: anywhere; }
+@media (min-width: 768px) {
+  /* carrinho: divisória entre produtos na linha inteira (por célula ela ficava em alturas diferentes) */
+  html.pz .pagina-carrinho .caixa-sombreada > table.tabela-carrinho tr:not(.bg-dark) > :is(td, th) { border-top: 0 !important; border-bottom: 0 !important; }
+  html.pz .pagina-carrinho .caixa-sombreada > table.tabela-carrinho tr:not(.bg-dark) { border-top: 1px solid var(--pz-line) !important; padding: 16px 0; }
+  html.pz .pagina-carrinho .caixa-sombreada > table.tabela-carrinho tr:first-child { border-top: 0 !important; padding: 0 0 4px; }
+}
+@media (min-width: 768px) {
+  html.pz .pagina-carrinho .caixa-sombreada > table.tabela-carrinho tr:has(> th) { border-bottom: 1px solid var(--pz-line) !important; padding-bottom: 10px; }
+}
+
+/* ---------- Janelas (galeria de fotos, carrinho, avisos): entrada suave ----------
+   O fundo aparece em fade; a janela sobe 12px e cresce de 97% para 100%; cada foto entra em fade. */
+@keyframes pz-fundo { from { opacity: 0; } }
+@keyframes pz-janela { from { opacity: 0; transform: translateY(12px) scale(.97); } }
+@keyframes pz-foto { from { opacity: 0; transform: scale(.985); } }
+html.pz .fancybox-overlay { animation: pz-fundo .3s ease-out both; }
+html.pz.pz-abrindo .fancybox-wrap.fancybox-opened { animation: pz-janela .4s var(--pz-ease-out) both; }
+html.pz.pz-abrindo .fancybox-image { animation: pz-foto .5s var(--pz-ease-out) both; }
+
+/* ---------- Galeria da foto ampliada (clique na foto do produto) ---------- */
+/* fundo escuro neutro: deixa a foto em evidência (o azul translúcido tingia a imagem) */
+html.pz .fancybox-overlay:has(.fancybox-type-image) { background: rgba(28, 28, 28, .82) !important; }
+html.pz .fancybox-type-image .fancybox-skin {
+  padding: 16px !important; border-radius: var(--pz-r-lg) !important; background: #fff !important;
+  box-shadow: 0 40px 90px -30px rgba(0, 0, 0, .6) !important;
+}
+html.pz .fancybox-type-image .fancybox-inner { border-radius: calc(var(--pz-r-lg) - 6px); overflow: hidden; }
+html.pz .fancybox-type-image .fancybox-image { object-fit: contain; cursor: zoom-out; }
+/* "×" e setas em círculos brancos, no padrão do site (o tema usava ícones pretos de imagem) */
+html.pz .fancybox-type-image .fancybox-close {
+  top: 14px !important; right: 14px !important; width: 44px !important; height: 44px !important; border-radius: 50%;
+  background: rgba(255, 255, 255, .94) none !important; box-shadow: 0 6px 18px -6px rgba(0, 0, 0, .35); z-index: 8050;
+  transition: transform .18s var(--pz-ease), background-color .18s var(--pz-ease);
+}
+html.pz .fancybox-type-image .fancybox-close::before { content: '×'; display: block; font: 300 30px/44px var(--pz-sans); color: var(--pz-teal-deep); text-align: center; }
+html.pz .fancybox-type-image .fancybox-close:hover { transform: scale(1.06); background-color: #fff !important; }
+html.pz .fancybox-type-image .fancybox-nav { width: 22%; background: none !important; }
+html.pz .fancybox-type-image .fancybox-nav span {
+  visibility: visible !important; width: 44px !important; height: 44px !important; margin-top: -22px !important; border-radius: 50%;
+  background: rgba(255, 255, 255, .94) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23386a75' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 6l6 6-6 6'/%3E%3C/svg%3E") center / 18px no-repeat !important;
+  box-shadow: 0 6px 18px -6px rgba(0, 0, 0, .35); opacity: .85; transition: opacity .18s var(--pz-ease), transform .18s var(--pz-ease);
+}
+html.pz .fancybox-type-image .fancybox-prev span { left: 14px !important; transform: scaleX(-1); }
+html.pz .fancybox-type-image .fancybox-next span { right: 14px !important; }
+html.pz .fancybox-type-image .fancybox-nav:hover span { opacity: 1; }
+@media (max-width: 767px) {
+  html.pz .fancybox-type-image .fancybox-skin { padding: 8px !important; }
+  html.pz .fancybox-type-image .fancybox-close { top: 8px !important; right: 8px !important; }
+}
+
+/* "Formas de pagamento": a loja não envia a tabela de parcelas, então o botão abria uma caixa vazia.
+   Fica escondido enquanto a caixa estiver vazia e volta sozinho se a plataforma passar a enviar as parcelas. */
+html.pz .product-functions:has(+ #parcelas-pai:empty) .toggle-payments,
+html.pz #parcelas-pai:empty { display: none !important; }
+
+/* miniaturas da página do produto: a plataforma posiciona a foto deslocada dentro do quadro; aqui ela fica no centro */
+html.pz .produto-thumbs .miniaturas li a { display: flex !important; align-items: center; justify-content: center; box-sizing: border-box; }
+html.pz .produto-thumbs .miniaturas li a img { position: static !important; inset: auto !important; transform: none !important; margin: 0 !important; }
+
+/* filtros da coluna: cada opção vira um botão branco com borda (antes era só texto solto no cinza) */
+html.pz .filtro.lista ul li { margin: 0 0 8px !important; }
+html.pz .filtro.lista ul li label {
+  display: flex !important; align-items: center; min-height: 44px; box-sizing: border-box; margin: 0 !important; padding: 10px 14px !important;
+  border: 1px solid var(--pz-line) !important; border-radius: 12px !important; background: #fff !important;
+  font: 500 14px/1.3 var(--pz-sans) !important; color: var(--pz-ink) !important; cursor: pointer;
+  transition: border-color .15s var(--pz-ease), color .15s var(--pz-ease), background-color .15s var(--pz-ease);
+}
+html.pz .filtro.lista ul li label:hover { border-color: var(--pz-teal) !important; color: var(--pz-teal-deep) !important; }
+html.pz .filtro.lista ul li label small { padding: 3px 8px; border-radius: 999px; background: var(--pz-porcelain); }
+html.pz .filtro.lista ul li.active label small { background: rgba(255, 255, 255, .16); }
+/* cores: bolinhas maiores dentro de um anel branco; a selecionada ganha anel azul */
+html.pz .filtro .atributo-cor ul { display: flex !important; flex-wrap: wrap; gap: 10px; margin: 0 !important; }
+html.pz .filtro .atributo-cor li { margin: 0 !important; padding: 0 !important; border: 0 !important; }
+html.pz .filtro .atributo-cor li a {
+  display: flex !important; align-items: center; justify-content: center; width: 44px; height: 44px; box-sizing: border-box;
+  border: 1px solid var(--pz-line) !important; border-radius: 50% !important; background: #fff !important; transition: border-color .15s var(--pz-ease);
+}
+html.pz .filtro .atributo-cor li a span { display: block !important; width: 30px !important; height: 30px !important; margin: 0 !important; border-width: 15px !important; border-style: solid !important; border-radius: 50% !important; box-sizing: border-box; outline: 1px solid rgba(0, 0, 0, .1); outline-offset: -1px; }
+html.pz .filtro .atributo-cor li a:hover { border-color: var(--pz-teal) !important; }
+html.pz .filtro .atributo-cor li.active a { border: 2px solid var(--pz-teal-deep) !important; }
+
+/* foto do card: o arredondado acompanha a própria foto (em pé, deitada ou quadrada), sem cortar nada */
+html.pz .listagem .imagem-produto img { width: auto !important; height: auto !important; }
+
+/* menu lateral: o título da categoria atual pegava o fundo azul do item selecionado e o texto (também azul) sumia */
+html.pz .coluna .menu.lateral .nivel-um > li.ativo > a,
+html.pz .coluna .menu.lateral .nivel-um > li.ativo > a:hover { background: none !important; }
+/* "Remover filtro: Cor": o botão é flex e engolia o espaço depois dos dois-pontos */
+html.pz .clear-filter-empty-result strong { margin-left: .3em; }
+
+/* título do filtro com "Limpar": os dois na mesma linha, centralizados na vertical e com espaço entre eles */
+html.pz .filtro h4.titulo:has(.limpar) { display: flex !important; align-items: center; justify-content: space-between; gap: 12px; }
+html.pz .filtro h4.titulo .limpar { float: none !important; flex: none; margin: 0 !important; }
+
+/* menu do topo: a barrinha dourada passa a ocupar a borda de cima do painel inteiro (antes só a largura do item) */
+@media (min-width: 768px) {
+  html.pz .menu.superior .nivel-um > li:has(> .nivel-dois)::before { display: none !important; }
+  html.pz .menu.superior .nivel-um > li > .nivel-dois { overflow: hidden; }
+  html.pz .menu.superior .nivel-um > li > .nivel-dois::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--pz-gold);
+    transform-origin: center; animation: pz-barra .45s var(--pz-ease-out) both;
+  }
+  @keyframes pz-barra { from { transform: scaleX(0); } }
+}
+
+/* número do carrinho: a plataforma trava a bolinha em 18px; com 2 ou 3 dígitos ela vira pílula e o número cabe dentro */
+html.pz .theme-functions .qtd-carrinho { width: auto !important; min-width: 18px !important; padding: 0 4px 1px !important; white-space: nowrap; }
