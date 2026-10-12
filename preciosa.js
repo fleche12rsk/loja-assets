@@ -214,7 +214,11 @@
       titulo.classList.add('pz-com-setas');
       titulo.appendChild(navs[i]);
       var setas = navs[i].querySelectorAll('a');
-      for (var k = 0; k < setas.length; k++) setas[k].addEventListener('click', setaRolaFaixa, true);
+      // no celular o carrossel do tema reage ao "touchend" e cancela o clique; por isso a seta escuta os dois
+      for (var k = 0; k < setas.length; k++) {
+        setas[k].addEventListener('touchend', setaRolaFaixa, true);
+        setas[k].addEventListener('click', setaRolaFaixa, true);
+      }
     }
   }
 
