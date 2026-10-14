@@ -7,6 +7,9 @@
  */
 (function () {
   'use strict';
+  // se o tema for colado duas vezes (ou carregado pelo painel e por outro lugar), só a primeira cópia age
+  if (window.pzTemaAtivo) return;
+  window.pzTemaAtivo = true;
 
   var CONFIG = {
     whatsapp: '5547988157179',
@@ -88,13 +91,22 @@
       // a plataforma troca pela 2ª foto do produto no hover; a foto do card fica fixa (o CSS também esconde a 2ª)
       img.removeAttribute('data-imagem-caminho');
       if (window.jQuery) jQuery(img).removeData('imagem-caminho');
+      marcaFormato(img);
       var src = img.getAttribute('src') || '';
       if (src.indexOf('/300x300/') === -1) continue;
       img.setAttribute('srcset', src + ' 300w, ' + src.replace('/300x300/', '/600x600/') + ' 600w');
-      img.setAttribute('sizes', '(max-width: 767px) 50vw, 300px');
+      img.setAttribute('sizes', '(max-width: 767px) 100vw, 300px');
       img.setAttribute('loading', 'lazy');
       img.setAttribute('decoding', 'async');
     }
+  }
+
+  // foto em pé ganha a classe pz-retrato: o CSS a ajusta pela altura (as deitadas e quadradas, pela largura),
+  // assim ela ocupa o quadro todo sem cortar e o arredondado continua acompanhando a própria foto
+  function marcaFormato(img) {
+    function aplica() { if (img.naturalWidth) img.classList.toggle('pz-retrato', img.naturalHeight > img.naturalWidth); }
+    if (img.complete) aplica();
+    img.addEventListener('load', aplica);
   }
 
   /* ---------- Página inicial ---------- */
@@ -254,9 +266,36 @@
     if (!faixa) return;
     e.preventDefault();
     e.stopImmediatePropagation();
-    var card = faixa.querySelector('ul > li:not(.clone)');
-    var passo = (card ? card.getBoundingClientRect().width : faixa.clientWidth) + 16; // largura do card + espaço entre eles
-    faixa.scrollBy({ left: e.currentTarget.classList.contains('flex-prev') ? -passo : passo, behavior: reduzMovimento ? 'auto' : 'smooth' });
+    // vai direto ao card seguinte/anterior (posição exata), em vez de "andar X pixels" a partir de onde está;
+    // o encaixe é desligado durante a animação: no iPhone ele brigava com a rolagem e parava no meio de dois cards
+    var cards = faixa.querySelectorAll('ul > li:not(.clone)');
+    if (!cards.length) return;
+    // posição de encaixe de cada card medida como o navegador mede (borda do card × borda interna da faixa),
+    // para o destino da seta e o encaixe darem o mesmo número e não haver "pulo" no fim
+    var borda = faixa.getBoundingClientRect().left + faixa.clientLeft + (parseFloat(getComputedStyle(faixa).scrollPaddingLeft) || 0);
+    function posicao(card) { return Math.round(card.getBoundingClientRect().left - borda + faixa.scrollLeft); }
+    var atual = 0, menor = Infinity;
+    for (var i = 0; i < cards.length; i++) {
+      var d = Math.abs(posicao(cards[i]) - faixa.scrollLeft);
+      if (d < menor) { menor = d; atual = i; }
+    }
+    var alvo = Math.max(0, Math.min(cards.length - 1, atual + (e.currentTarget.classList.contains('flex-prev') ? -1 : 1)));
+    var destino = Math.max(0, Math.min(posicao(cards[alvo]), faixa.scrollWidth - faixa.clientWidth));
+    // o encaixe fica desligado só durante a animação (no iPhone ele brigava com ela) e volta quando a rolagem termina
+    faixa.style.scrollSnapType = 'none';
+    clearTimeout(faixa.pzEncaixe);
+    var parado = 0, ultimo = -1;
+    function confere() {
+      if (Math.abs(faixa.scrollLeft - destino) < 1 || (faixa.scrollLeft === ultimo && ++parado > 3)) {
+        faixa.style.scrollSnapType = '';
+        return;
+      }
+      if (faixa.scrollLeft !== ultimo) parado = 0;
+      ultimo = faixa.scrollLeft;
+      faixa.pzEncaixe = setTimeout(confere, 50);
+    }
+    faixa.scrollTo({ left: destino, behavior: reduzMovimento ? 'auto' : 'smooth' });
+    faixa.pzEncaixe = setTimeout(confere, 50);
   }
 
   /* ---------- Botão do menu (celular): ícone padrão de 3 traços iguais e nome para leitores de tela ---------- */
@@ -265,6 +304,19 @@
     if (!b || b.querySelector('.pz-burger')) return;
     if (!b.getAttribute('aria-label')) b.setAttribute('aria-label', 'Abrir menu');
     b.insertAdjacentHTML('beforeend', '<svg class="pz-burger" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="M4 7h16M4 12h16M4 17h16"/></svg>');
+  }
+
+  /* ---------- Menu do celular: item sem página própria ("Páginas") abre os subitens ao tocar no nome ----------
+     O link desses itens não leva a lugar nenhum; só a setinha ao lado abria a lista. */
+  function menuItemSemPagina() {
+    document.addEventListener('click', function (e) {
+      if (!celular.matches) return;
+      var a = e.target.closest && e.target.closest('li.com-filho > a[href^="javascript"]');
+      var bt = a && a.parentElement.querySelector(':scope > .menu-dropdown-toggle');
+      if (!bt) return;
+      e.preventDefault();
+      bt.click();
+    });
   }
 
   /* ---------- Foto do produto: sem lupa no hover; amplia só ao clicar ou tocar ----------
@@ -356,6 +408,7 @@
     document.documentElement.classList.add('pz');
     cabecalho();
     botaoMenu();
+    menuItemSemPagina();
     paginaInicial();
     fotosNitidas();
     credito();

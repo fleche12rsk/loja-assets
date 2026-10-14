@@ -638,7 +638,7 @@ html.pz .pagina-produto .conteiner-imagem img#imagemProduto { border-radius: var
     grid-column: 2; justify-self: end; width: 44px !important; height: 44px !important; margin: 0 !important; padding: 0 !important;
     display: flex !important; align-items: center; justify-content: center; background: none !important; border: 0 !important;
   }
-  html.pz .menu.superior .nivel-um > li > .nivel-dois { grid-column: 1 / -1; margin: 0 0 12px !important; padding: 0 !important; position: static !important; width: auto !important; box-shadow: none !important; border: 0 !important; background: none !important; }
+  html.pz .menu.superior .nivel-um > li > .nivel-dois { grid-column: 1 / -1; margin: 0 !important; padding: 0 !important; position: static !important; width: auto !important; box-shadow: none !important; border: 0 !important; background: none !important; }
   html.pz .menu.superior .nivel-dois > li { border: 0 !important; padding: 0 !important; display: grid; grid-template-columns: minmax(0, 1fr) 44px; align-items: center; }
   html.pz .menu.superior .nivel-dois > li > a { grid-column: 1; padding: 11px 0 !important; font: 400 16px/1.35 var(--pz-sans) !important; color: var(--pz-ink) !important; white-space: normal; }
   html.pz .menu.superior .nivel-dois > li > .menu-dropdown-toggle { grid-column: 2; justify-self: end; width: 44px; height: 44px; display: flex !important; align-items: center; justify-content: center; background: none !important; border: 0 !important; }
@@ -2062,3 +2062,42 @@ html.pz .filtro h4.titulo .limpar { float: none !important; flex: none; margin: 
 
 /* número do carrinho: a plataforma trava a bolinha em 18px; com 2 ou 3 dígitos ela vira pílula e o número cabe dentro */
 html.pz .theme-functions .qtd-carrinho { width: auto !important; min-width: 18px !important; padding: 0 4px 1px !important; white-space: nowrap; }
+
+/* carrossel no celular: um card por gesto (não pula dois de uma vez num deslize rápido) */
+@media (max-width: 767px) {
+  html.pz .listagem .flexslider .flex-viewport > ul > li { scroll-snap-stop: always; }
+}
+
+/* popup de newsletter: campo e botão grudados, como uma peça só (o tema arredondava os 4 cantos dos dois) */
+html.pz .modal-modalNewsletter .input-conteiner input[type="text"] { border-top-right-radius: 0 !important; border-bottom-right-radius: 0 !important; border-right: 0 !important; }
+html.pz .modal-modalNewsletter .input-conteiner .newsletter-assinar { border-top-left-radius: 0 !important; border-bottom-left-radius: 0 !important; margin-left: 0 !important; }
+
+/* carrossel no celular: a moldura da foto recebia largura fixa da plataforma, 2px maior que o card, e a borda direita era cortada */
+@media (max-width: 767px) {
+  html.pz .listagem .flexslider .flex-viewport .imagem-produto { width: 100% !important; max-width: 100% !important; box-sizing: border-box; }
+}
+
+/* foto do card ocupando o quadro (antes ficava no tamanho do arquivo, pequena no meio do card):
+   deitada ou quadrada ajusta pela largura, em pé (.pz-retrato, marcada pelo script) ajusta pela altura */
+html.pz .listagem .imagem-produto img.imagem-principal { width: calc(100% - 16px) !important; height: auto !important; max-height: calc(100% - 16px) !important; }
+html.pz .listagem .imagem-produto img.imagem-principal.pz-retrato { width: auto !important; height: calc(100% - 16px) !important; max-width: calc(100% - 16px) !important; }
+
+/* algumas fotos vêm do CDN com uma linha cinza de 1px na borda: some esse 1px de cada lado, mantendo o arredondado */
+html.pz .listagem .imagem-produto img.imagem-principal { clip-path: inset(1px round calc(var(--pz-r-lg) - 8px)); }
+/* a mesma junção também quando a janela abre pelo bloco #modalNewsletter (nem sempre vem dentro de .modal-modalNewsletter) */
+html.pz #modalNewsletter .input-conteiner input[type="text"] { border-top-right-radius: 0 !important; border-bottom-right-radius: 0 !important; border-right: 0 !important; }
+html.pz #modalNewsletter .input-conteiner .newsletter-assinar { border-top-left-radius: 0 !important; border-bottom-left-radius: 0 !important; margin-left: 0 !important; }
+
+/* celular: busca, conta e carrinho encostados à direita, com a mesma margem do botão de menu à esquerda
+   (a linha do cabeçalho não ocupava a largura toda e os ícones paravam ~45px antes da borda) */
+@media (max-width: 767px) {
+  html.pz .pz-header .container > .row-flex { flex: 1 1 auto !important; }
+  html.pz .pz-header .col:has(> .theme-functions) { padding-right: 0 !important; }
+  html.pz .pz-header .theme-functions { margin-left: auto !important; margin-right: 2px !important; }
+}
+
+/* menu do celular: o espaço embaixo dos subitens fica dentro do último item, que a animação de abrir acompanha
+   (como margem com prioridade máxima ele aparecia de uma vez e a categoria de baixo pulava 12px) */
+@media (max-width: 767px) {
+  html.pz .menu.superior .nivel-um > li > .nivel-dois > li:last-child { padding-bottom: 12px !important; }
+}
